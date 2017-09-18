@@ -31,10 +31,13 @@
         </ul>
     </div>
     <div id="appContainer">
+        <input type="text" id="leftSearchInput">
+        <input type="text" id="rightSearchInput">
+
         <button v-on:click="loadData()" id="runanalysis" type="button" value="Analyse">Search</button>
 
         <div id="mainContainer">
-               {{ allData }}
+                 {{ outputString }}    
         </div>
     </div>
 </body>

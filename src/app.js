@@ -2,15 +2,16 @@ new Vue({
     el: '#appContainer',
 
     data: {
-        allData: ''
+        outputString: ''
     },
     methods: {
         loadData: function () {
+            var ctrl = this;
             axios.get('/src/data.json', {
                     "encodingType": "UTF8"
                 })
                 .then(function (response) {
-                    allData =JSON.stringify(response.data.data);
+                    ctrl.outputString = JSON.stringify(response.data.data);
                 });
         }
     }
