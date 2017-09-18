@@ -1,0 +1,42 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Benefits App</title>
+    <meta name="description" content="Vent App">
+    <meta name="author" content="Darragh ORiordan">
+    <script src="https://unpkg.com/vue"></script>
+    <link rel="stylesheet" href="app.css?v=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js" integrity="sha256-mJAzKDq6kSoKqZKnA6UNLtPaIj8zT2mFnWu/GSouhgQ="
+        crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.js" integrity="sha256-JXU9bC6uJttvR5dnFkXWImMeNfVl0MwHM8OdBtdGtJs="
+        crossorigin="anonymous"></script>
+    <!--[if lt IE 9]>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
+  <![endif]-->
+    <script src="app.js" defer></script>
+</head>
+
+<body>
+    <div id="header">
+        <span class="header__logo">Benefits</span>
+        <ul class="header__menu">
+            <li class="header__menuitem"><a href="/">Home</a> </li>
+            <li class="header__menuitem"><a href="/about.html">About</a></li>
+        </ul>
+    </div>
+    <div id="appContainer">
+        <button v-on:click="loadData()" id="runanalysis" type="button" value="Analyse">Search</button>
+
+        <div id="mainContainer">
+               {{ allData }}
+        </div>
+    </div>
+</body>
+
+</html>

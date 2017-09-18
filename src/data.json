@@ -1,0 +1,37 @@
+{
+    "data": [{
+            "Company": {
+                "Name": "Trade Me",
+                "Location": "Auckland, New Zealand"
+            },
+            "Perks": [{
+                    "name": "Free Expresso Coffee",
+                    "type": "bool"
+                },
+                {
+                    "name": "Kiwisaver",
+                    "type": "percent",
+                    "value": 3
+                }
+            ]
+        },
+        {
+            "Company": {
+                "Name": "Genesis Energy",
+                "Location": "Auckland, New Zealand"
+            },
+            "Perks": [{
+                    "name": "Free Expresso Coffee",
+                    "type": "bool"
+                },
+                {
+                    "name": "Kiwisaver",
+                    "type": "percent",
+                    "value": 4
+                }
+            ]
+        }
+
+    ]
+
+}
