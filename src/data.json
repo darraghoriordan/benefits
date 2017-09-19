@@ -1,10 +1,10 @@
 {
     "data": [{
-            "Company": {
-                "Name": "Trade Me",
-                "Location": "Auckland, New Zealand"
+            "company": {
+                "name": "Trade Me",
+                "location": "Auckland, New Zealand"
             },
-            "Perks": [{
+            "perks": [{
                     "name": "Free Expresso Coffee",
                     "type": "bool"
                 },
@@ -16,11 +16,11 @@
             ]
         },
         {
-            "Company": {
-                "Name": "Genesis Energy",
-                "Location": "Auckland, New Zealand"
+            "company": {
+                "name": "Genesis Energy",
+                "location": "Auckland, New Zealand"
             },
-            "Perks": [{
+            "perks": [{
                     "name": "Free Expresso Coffee",
                     "type": "bool"
                 },
