@@ -38,19 +38,22 @@ Vue.component('company-selection', {
 
 new Vue({
     el: '#appContainer',
-    template: '<div><company-selection @selected="selectedLeft" :company-collection="companyCollection"></company-selection><company-selection @selected="selectedRight" :company-collection="companyCollection"></company-selection><demo-grid></demo-grid></div>',
+    template: '<div><company-selection @selected="selectedLeft" :company-collection="companyCollection"></company-selection><company-selection @selected="selectedRight" :company-collection="companyCollection"></company-selection><span style="float:left;">{{ leftThing }}</span><span style="float:right;">{{ rightThing }}</span> </div>',
     data: {
         companyCollection: [],
+        leftThing: '',
+        rightThing: ''
     },
     created: function () {
         this.loadData()
     },
     methods: {
         selectedLeft: function (value) {
-            console.log(value);
+            leftThing = this.companyCollection.filter(x=> x.company.name == value)[0];
         },
         selectedRight: function (value) {
-            console.log(value);
+            rightThing =JSON.stringify( this.companyCollection.filter(x=> x.company.name == value)[0]
+        )
         },
         loadData: function () {
             var ctrl = this;
