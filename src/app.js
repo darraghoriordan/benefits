@@ -1,3 +1,12 @@
+// register the grid component
+Vue.component('demo-grid', {
+    template: '#grid-template',
+    props: {
+        headers: Array,
+        data: Array
+    }
+})
+
 Vue.component('company-selection', {
     props: {
 
@@ -14,25 +23,35 @@ Vue.component('company-selection', {
         }
     },
     template: `<select @change="changeItem(rowId, $event)">
-                <option>select item</option>
-                <option :value="item.company.name"  v-for="item in companyCollection">
+                <option disabled value="">select a company</option>
+                <option :value="item.company.name" v-for="item in companyCollection">
                 {{item.company.name}}
                 </option>
                 </select>`,
     methods: {
         changeItem: function (rowId, event) {
             this.selected = `${rowId}, ${event.target.value}`
+            this.$emit('selected', event.target.value)
         }
     }
 });
 
 new Vue({
     el: '#appContainer',
-    template: '<div><button v-on:click="loadData()">load</button><company-selection :company-collection="companyCollection"></company-selection></div>',
+    template: '<div><company-selection @selected="selectedLeft" :company-collection="companyCollection"></company-selection><company-selection @selected="selectedRight" :company-collection="companyCollection"></company-selection><demo-grid></demo-grid></div>',
     data: {
         companyCollection: [],
     },
+    created: function () {
+        this.loadData()
+    },
     methods: {
+        selectedLeft: function (value) {
+            console.log(value);
+        },
+        selectedRight: function (value) {
+            console.log(value);
+        },
         loadData: function () {
             var ctrl = this;
             axios.get('/data.json', {

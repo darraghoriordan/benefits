@@ -14,13 +14,36 @@
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js" integrity="sha256-mJAzKDq6kSoKqZKnA6UNLtPaIj8zT2mFnWu/GSouhgQ="
         crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.js" integrity="sha256-JXU9bC6uJttvR5dnFkXWImMeNfVl0MwHM8OdBtdGtJs="
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.js" integrity="sha256-JXU9bC6uJttvR5dnFkXWImMeNfVl0MwHM8OdBtdGtJs="
         crossorigin="anonymous"></script>
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
   <![endif]-->
     <script src="app.js" defer></script>
+    <!-- component template -->
+
+
 </head>
+<script type="text/x-template" id="grid-template">
+    <table>
+        <thead>
+            <tr>
+                <th v-for="key in columns" @click="sortBy(key)" :class="{ active: sortKey == key }">
+                    {{ key | capitalize }}
+                    <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+            </span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="entry in filteredData">
+                <td v-for="key in columns">
+                    {{entry[key]}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
 
 <body>
     <div id="header">
@@ -31,14 +54,6 @@
         </ul>
     </div>
     <div id="appContainer">
-        <input type="text" id="leftSearchInput">
-        <input type="text" id="rightSearchInput">
-
-        <button v-on:click="loadData()" id="runanalysis" type="button" value="Analyse">Search</button>
-
-        <div id="mainContainer">
-                 {{ outputString }}    
-        </div>
     </div>
 </body>
 
