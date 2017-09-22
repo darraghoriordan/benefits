@@ -26,23 +26,32 @@
 </head>
 <script type="text/x-template" id="grid-template">
     <table>
-        <thead>
+        <!-- <thead>
             <tr>
-                <th v-for="key in columns" @click="sortBy(key)" :class="{ active: sortKey == key }">
+                <th v-for="key in columns">
                     {{ key | capitalize }}
-                    <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
+                    <span class="arrow">
             </span>
                 </th>
             </tr>
-        </thead>
+        </thead> -->
         <tbody>
-            <tr v-for="entry in filteredData">
-                <td v-for="key in columns">
-                    {{entry[key]}}
+            <tr v-for="entry in comparisonTable">
+                <td>
+                    {{ entry }}
                 </td>
             </tr>
         </tbody>
     </table>
+</script>
+<script type="text/x-template" id="app-template">
+    <div>
+        <company-selection @selected="selectedLeft" :company-collection="companyCollection">
+        </company-selection>
+        <company-selection @selected="selectedRight" :company-collection="companyCollection">
+        </company-selection>
+        <demo-grid :leftCompare="leftThing" :rightCompare="rightThing"></demo-grid>
+    </div>
 </script>
 
 <body>

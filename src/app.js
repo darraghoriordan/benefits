@@ -2,14 +2,27 @@
 Vue.component('demo-grid', {
     template: '#grid-template',
     props: {
-        headers: Array,
-        data: Array
+        leftCompare: {},
+        rightCompare: {}
+    },
+    computed: {
+        comparisonTable: function () {
+            let combinedData = [];
+            for (var key in this.leftCompare) {
+                if (this.leftCompare.hasOwnProperty(key)) {
+                    combinedData.push(key);
+                }
+            }
+            //for each heading
+            // for each prop on left add the left and right value
+            // for each prop on right add the left value
+            return combinedData;
+        }
     }
 })
 
 Vue.component('company-selection', {
     props: {
-
         companyCollection: {
             type: Array,
             required: true
@@ -38,22 +51,22 @@ Vue.component('company-selection', {
 
 new Vue({
     el: '#appContainer',
-    template: '<div><company-selection @selected="selectedLeft" :company-collection="companyCollection"></company-selection><company-selection @selected="selectedRight" :company-collection="companyCollection"></company-selection><span style="float:left;">{{ leftThing }}</span><span style="float:right;">{{ rightThing }}</span> </div>',
+    template: '#app-template',
     data: {
         companyCollection: [],
-        leftThing: '',
-        rightThing: ''
+        leftThing: {},
+        rightThing: {}
     },
     created: function () {
         this.loadData()
     },
     methods: {
         selectedLeft: function (value) {
-            leftThing = this.companyCollection.filter(x=> x.company.name == value)[0];
+            this.leftThing = this.companyCollection.filter(x => x.company.name == value)[0]
         },
         selectedRight: function (value) {
-            rightThing =JSON.stringify( this.companyCollection.filter(x=> x.company.name == value)[0]
-        )
+            this.rightThing = this.companyCollection.filter(x => x.company.name == value)[0]
+
         },
         loadData: function () {
             var ctrl = this;

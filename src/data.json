@@ -5,15 +5,36 @@
                 "location": "Auckland, New Zealand"
             },
             "perks": [{
-                    "name": "Free Expresso Coffee",
-                    "type": "bool"
-                },
-                {
-                    "name": "Kiwisaver",
-                    "type": "percent",
-                    "value": 3
-                }
-            ]
+                "name": "Free Expresso Coffee",
+                "type": "bool",
+                "value": "true"
+            }],
+            "benefits": [{
+                "name": "Kiwisaver",
+                "type": "percent",
+                "value": 3
+            }],
+            "technology": [{
+                "name": "Web Backend",
+                "type": "text",
+                "value": ".Net"
+            }, {
+                "name": "Database Backend",
+                "type": "text",
+                "value": "SQL Server"
+            }, {
+                "name": "Web Front End",
+                "type": "text",
+                "value": "Asp.Net"
+            }, {
+                "name": "Native iOS",
+                "type": "text",
+                "value": "Objective-C and Swift"
+            }, {
+                "name": "Native Android",
+                "type": "text",
+                "value": "Java and Kotlin"
+            }]
         },
         {
             "company": {
@@ -22,7 +43,8 @@
             },
             "perks": [{
                     "name": "Free Expresso Coffee",
-                    "type": "bool"
+                    "type": "bool",
+                    "value": "true"
                 },
                 {
                     "name": "Kiwisaver",
@@ -31,7 +53,5 @@
                 }
             ]
         }
-
     ]
-
 }
