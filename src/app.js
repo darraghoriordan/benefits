@@ -1,6 +1,24 @@
 // register the grid component
 Vue.component('demo-grid', {
     template: '#grid-template',
+    methods: {
+        calcualteValue: function (prop) {
+            if (!prop) {
+                return 'Unknown';
+            }
+            if (prop.type == 'bool') {
+                if (prop.value == 'true') {
+                    return "Yes"
+                }
+                return 'No';
+            }
+            if (prop.type == 'percent') {
+                return prop.value + '%';
+            }
+
+            return prop.value;
+        }
+    },
     props: {
         leftCompare: {},
         rightCompare: {}
@@ -11,8 +29,27 @@ Vue.component('demo-grid', {
             for (var key in this.leftCompare) {
                 if (this.leftCompare.hasOwnProperty(key)) {
                     combinedData.push(key);
+                    for (var prop in this.leftCompare[key]) {
+                        if (this.leftCompare[key].hasOwnProperty(prop)) {
+                            let currentProp = this.leftCompare[key][prop];
+                            combinedData[key].push({
+                                name: prop.name,
+                                leftValue: this.calculateValue(prop),
+                                rightValue: this.calculateValue(prop)
+                            })
+                        }
+                    }
                 }
             }
+            for (var key in this.rightCompare) {
+                if (this.rightCompare.hasOwnProperty(key)) {
+                    if (!combinedData.includes(key)) {
+                        combinedData.push(key);
+                    }
+                }
+            }
+
+
             //for each heading
             // for each prop on left add the left and right value
             // for each prop on right add the left value
@@ -36,7 +73,7 @@ Vue.component('company-selection', {
         }
     },
     template: `<select @change="changeItem(rowId, $event)">
-                <option disabled value="">select a company</option>
+                <option disabled value="">Select a company</option>
                 <option :value="item.company.name" v-for="item in companyCollection">
                 {{item.company.name}}
                 </option>
