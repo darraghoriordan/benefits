@@ -17,6 +17,37 @@ Vue.component('demo-grid', {
             }
 
             return prop.value;
+        },
+        getFields: function (companyObjectX, companyObjectY, categoryName) {
+            let fieldList = [];
+            //for all the props in X create as new and then check value in Y
+
+            for (var prop in companyObjectX[categoryName]) {
+                if (!companyObjectX[categoryName].hasOwnProperty(prop)) {
+                    // not a specific property
+                    continue;
+                }
+                let currentXProp = companyObjectX[categoryName][prop];
+                let newCombinedProp = {};
+                newCombinedProp.name = currentXProp.name;
+                newCombinedProp.valueX = currentXProp.value;
+
+                if (companyObjectY && companyObjectY[categoryName]) {
+                    let currentYProp = companyObjectY[categoryName].find(x => x.name === currentXProp.name);
+                    if (!currentYProp) {
+                        newCombinedProp.valueY = "Unknown";
+                    } else {
+                        newCombinedProp.valueY = currentYProp.value;
+                    }
+                } else {
+                    newCombinedProp.valueY = "Unknown";
+                }
+
+                fieldList.push(newCombinedProp);
+
+            }
+            //TODO: for all the props in Y where the prop doesnt already exist add and set X to unknown  
+            return fieldList;
         }
     },
     props: {
@@ -27,32 +58,16 @@ Vue.component('demo-grid', {
         comparisonTable: function () {
             let combinedData = [];
             for (var key in this.leftCompare) {
-                if (this.leftCompare.hasOwnProperty(key)) {
-                    combinedData.push(key);
-                    for (var prop in this.leftCompare[key]) {
-                        if (this.leftCompare[key].hasOwnProperty(prop)) {
-                            let currentProp = this.leftCompare[key][prop];
-                            combinedData[key].push({
-                                name: prop.name,
-                                leftValue: this.calculateValue(prop),
-                                rightValue: this.calculateValue(prop)
-                            })
-                        }
-                    }
+                if (!this.leftCompare.hasOwnProperty(key)) {
+                    continue;
                 }
-            }
-            for (var key in this.rightCompare) {
-                if (this.rightCompare.hasOwnProperty(key)) {
-                    if (!combinedData.includes(key)) {
-                        combinedData.push(key);
-                    }
-                }
+                let category = {};
+                category.name = key;
+                category.fields = this.getFields(this.leftCompare, this.rightCompare, category.name)
+
+                combinedData.push(category);
             }
 
-
-            //for each heading
-            // for each prop on left add the left and right value
-            // for each prop on right add the left value
             return combinedData;
         }
     }
@@ -72,10 +87,18 @@ Vue.component('company-selection', {
             rowId: 10
         }
     },
+    computed: {
+        companyNameList: function () {
+            let list = this.companyCollection.map(
+                x => x.company.find(n => n.name == "Company Name").value
+            );
+            return list;
+        }
+    },
     template: `<select @change="changeItem(rowId, $event)">
                 <option disabled value="">Select a company</option>
-                <option :value="item.company.name" v-for="item in companyCollection">
-                {{item.company.name}}
+                <option :value="item" v-for="item in companyNameList">
+                {{ item }}
                 </option>
                 </select>`,
     methods: {
@@ -99,10 +122,22 @@ new Vue({
     },
     methods: {
         selectedLeft: function (value) {
-            this.leftThing = this.companyCollection.filter(x => x.company.name == value)[0]
+            let localValue = value;
+            this.leftThing = this.companyCollection.find(
+                function (x) {
+                    let result = x.company.find(n => n.name == "Company Name").value === localValue;
+                    return result;
+                })
+
         },
         selectedRight: function (value) {
-            this.rightThing = this.companyCollection.filter(x => x.company.name == value)[0]
+            let localValue = value;
+            this.rightThing = this.companyCollection.find(
+                function (x) {
+                    let result = x.company.find(n => n.name == "Company Name").value === localValue;
+                    return result;
+                }
+            )
 
         },
         loadData: function () {

@@ -1,9 +1,14 @@
 {
     "data": [{
-            "company": {
-                "name": "Trade Me",
-                "location": "Auckland, New Zealand"
-            },
+            "company": [{
+                "name": "Company Name",
+                "type": "string",
+                "value": "Trade Me Ltd"
+            },{
+                "name": "Location",
+                "type": "string",
+                "value": "Auckland, New Zealand"
+            }],
             "perks": [{
                 "name": "Free Expresso Coffee",
                 "type": "bool",
@@ -37,10 +42,15 @@
             }]
         },
         {
-            "company": {
-                "name": "Genesis Energy",
-                "location": "Auckland, New Zealand"
-            },
+            "company": [{
+                "name": "Company Name",
+                "type": "string",
+                "value": "Genesis Energy"
+            },{
+                "name": "Location",
+                "type": "string",
+                "value": "Auckland, New Zealand"
+            }],
             "perks": [{
                     "name": "Free Expresso Coffee",
                     "type": "bool",
