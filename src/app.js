@@ -2,6 +2,31 @@
 Vue.component('demo-grid', {
     template: '#grid-template',
     methods: {
+        getCategoryNameCollection: function (companyX, companyY) {
+            let categoryNameCollection = [];
+
+            for (var key in companyX) {
+                if (!companyX.hasOwnProperty(key)) {
+                    continue;
+                }
+                categoryNameCollection.push(key);
+            }
+            for (var key in companyY) {
+                if (!companyY.hasOwnProperty(key)) {
+                    continue;
+                }
+                if (categoryNameCollection.find(
+                        function (element) {
+                            return element == key;
+                        }
+                    )) {
+                    continue;
+                }
+                categoryNameCollection.push(key);
+            }
+
+            return categoryNameCollection;
+        },
         calcualteValue: function (prop) {
             if (!prop) {
                 return 'Unknown';
@@ -47,6 +72,28 @@ Vue.component('demo-grid', {
 
             }
             //TODO: for all the props in Y where the prop doesnt already exist add and set X to unknown  
+            for (var prop in companyObjectY[categoryName]) {
+                if (!companyObjectY[categoryName].hasOwnProperty(prop)) {
+                    // not a specific property
+                    continue;
+                }
+                let currentXProp = null
+                let currentXCategory = companyObjectX[categoryName];
+                if (currentXCategory) {
+                    currentXProp = companyObjectX[categoryName][prop];
+                }
+                if (!currentXProp) {
+                    let currentYProp = companyObjectY[categoryName][prop];
+
+                    let newCombinedProp = {};
+                    newCombinedProp.name = currentYProp.name;
+                    newCombinedProp.valueY = currentYProp.value;
+                    newCombinedProp.valueX = "Unknown";
+
+                    fieldList.push(newCombinedProp);
+                }
+            }
+
             return fieldList;
         }
     },
@@ -57,19 +104,18 @@ Vue.component('demo-grid', {
     computed: {
         comparisonTable: function () {
             let combinedData = [];
-            for (var key in this.leftCompare) {
-                if (!this.leftCompare.hasOwnProperty(key)) {
-                    continue;
-                }
+
+            this.getCategoryNameCollection(this.leftCompare, this.rightCompare).forEach(function (element) {
                 let category = {};
-                category.name = key;
+                category.name = element;
                 category.fields = this.getFields(this.leftCompare, this.rightCompare, category.name)
 
                 combinedData.push(category);
-            }
+            }, this);
 
             return combinedData;
         }
+
     }
 })
 
