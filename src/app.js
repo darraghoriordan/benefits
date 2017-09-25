@@ -72,25 +72,27 @@ Vue.component('demo-grid', {
 
             }
             //TODO: for all the props in Y where the prop doesnt already exist add and set X to unknown  
-            for (var prop in companyObjectY[categoryName]) {
-                if (!companyObjectY[categoryName].hasOwnProperty(prop)) {
-                    // not a specific property
-                    continue;
-                }
-                let currentXProp = null
-                let currentXCategory = companyObjectX[categoryName];
-                if (currentXCategory) {
-                    currentXProp = companyObjectX[categoryName][prop];
-                }
-                if (!currentXProp) {
-                    let currentYProp = companyObjectY[categoryName][prop];
+            if (companyObjectY) {
+                for (var prop in companyObjectY[categoryName]) {
+                    if (!companyObjectY[categoryName].hasOwnProperty(prop)) {
+                        // not a specific property
+                        continue;
+                    }
+                    let currentXProp = null
+                    let currentXCategory = companyObjectX[categoryName];
+                    if (currentXCategory) {
+                        currentXProp = companyObjectX[categoryName][prop];
+                    }
+                    if (!currentXProp) {
+                        let currentYProp = companyObjectY[categoryName][prop];
 
-                    let newCombinedProp = {};
-                    newCombinedProp.name = currentYProp.name;
-                    newCombinedProp.valueY = currentYProp.value;
-                    newCombinedProp.valueX = "Unknown";
+                        let newCombinedProp = {};
+                        newCombinedProp.name = currentYProp.name;
+                        newCombinedProp.valueY = currentYProp.value;
+                        newCombinedProp.valueX = "Unknown";
 
-                    fieldList.push(newCombinedProp);
+                        fieldList.push(newCombinedProp);
+                    }
                 }
             }
 
@@ -142,7 +144,7 @@ Vue.component('company-selection', {
         }
     },
     template: `<select @change="changeItem(rowId, $event)">
-                <option disabled value="">Select a company</option>
+                <option value="">Select a company</option>
                 <option :value="item" v-for="item in companyNameList">
                 {{ item }}
                 </option>
