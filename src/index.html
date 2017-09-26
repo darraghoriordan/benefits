@@ -25,29 +25,46 @@
 
 </head>
 <script type="text/x-template" id="grid-template">
-    <table>
-        <!-- <thead>
-            <tr>
-                <th v-for="key in columns">
-                    {{ key | capitalize }}
-                    <span class="arrow">
-            </span>
-                </th>
-            </tr>
-        </thead> -->
-        <tbody>
-            <tr v-for="entry in comparisonTable">
-                <td>
-                    {{ entry.name }}
-                    <br><br>
-                    {{ entry.fields }}
-                </td>            
-            </tr>
-        </tbody>
-    </table>
+    <div id="comparison-tables-container" style="margin-left:auto;margin-right:auto;width:80%">
+        <div v-for="entry in comparisonTable">
+            <table width="100%">
+                <thead>
+                    <tr>
+                        <th>
+                            {{ entry.name }}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="field in entry.fields">
+                        <td width="33%">
+                            {{ field.name }}
+                        </td>
+                        <td width="33%">
+                            {{ field.valueX }}
+                        </td>
+                        <td width="33%">
+                            {{ field.valueY }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</script>
+<script type="text/x-template" id="calculator-form-template">
+    <div>
+        <input v-model="salary" placeholder="salary">
+        <input v-model="superannuation" placeholder="superannuation %">
+    </div>
+</script>
+<script type="text/x-template" id="calculator-results-template" :annualised-salary>
+    <div>
+        
+    </div>
 </script>
 <script type="text/x-template" id="app-template">
-    <div>
+    <div style="margin-left:auto;margin-right:auto;width:80%">
         <company-selection @selected="selectedLeft" :company-collection="companyCollection">
         </company-selection>
         <company-selection @selected="selectedRight" :company-collection="companyCollection">
@@ -57,7 +74,7 @@
 </script>
 
 <body>
-    <div id="header">
+    <div id="header" style="margin-left:auto;margin-right:auto;width:80%">
         <span class="header__logo">Benefits</span>
         <ul class="header__menu">
             <li class="header__menuitem"><a href="/">Home</a> </li>

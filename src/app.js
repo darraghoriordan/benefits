@@ -45,11 +45,9 @@ Vue.component('demo-grid', {
         },
         getFields: function (companyObjectX, companyObjectY, categoryName) {
             let fieldList = [];
-            //for all the props in X create as new and then check value in Y
 
             for (var prop in companyObjectX[categoryName]) {
                 if (!companyObjectX[categoryName].hasOwnProperty(prop)) {
-                    // not a specific property
                     continue;
                 }
                 let currentXProp = companyObjectX[categoryName][prop];
@@ -69,9 +67,8 @@ Vue.component('demo-grid', {
                 }
 
                 fieldList.push(newCombinedProp);
-
             }
-            //TODO: for all the props in Y where the prop doesnt already exist add and set X to unknown  
+
             if (companyObjectY) {
                 for (var prop in companyObjectY[categoryName]) {
                     if (!companyObjectY[categoryName].hasOwnProperty(prop)) {
@@ -119,6 +116,10 @@ Vue.component('demo-grid', {
         }
 
     }
+})
+Vue.component('calculator-form', {
+    template:"#calculator-form-template",
+
 })
 
 Vue.component('company-selection', {

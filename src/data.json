@@ -4,7 +4,7 @@
                 "name": "Company Name",
                 "type": "string",
                 "value": "Trade Me Ltd"
-            },{
+            }, {
                 "name": "Location",
                 "type": "string",
                 "value": "Auckland, New Zealand"
@@ -46,22 +46,57 @@
                 "name": "Company Name",
                 "type": "string",
                 "value": "Genesis Energy"
-            },{
+            }, {
                 "name": "Location",
                 "type": "string",
                 "value": "Auckland, New Zealand"
             }],
             "perks": [{
-                    "name": "Free Expresso Coffee",
-                    "type": "bool",
-                    "value": "true"
-                },
-                {
-                    "name": "Kiwisaver",
-                    "type": "percent",
-                    "value": 4
-                }
-            ]
+                "name": "Free Expresso Coffee",
+                "type": "bool",
+                "value": "true"
+            }, {
+                "name": "Social Club",
+                "type": "bool",
+                "value": "true"
+            }],
+            "benefits": [{
+                "name": "Kiwisaver",
+                "type": "percent",
+                "value": 4
+            }, {
+                "name": "Volunteer Day(s)",
+                "type": "number",
+                "value": 1
+            }, {
+                "name": "Energy Services Discount",
+                "type": "boolean",
+                "value": "true"
+            }, {
+                "name": "Health Insurance",
+                "type": "boolean",
+                "value": "true"
+            }, {
+                "name": "Life Insurance",
+                "type": "boolean",
+                "value": "true"
+            }, {
+                "name": "Trauma Insurance",
+                "type": "boolean",
+                "value": "true"
+            }, {
+                "name": "Income Protection Insurance",
+                "type": "boolean",
+                "value": "true"
+            }, {
+                "name": "Employee Share Scheme",
+                "type": "boolean",
+                "value": "true"
+            }, {
+                "name": "Employee Referral Scheme",
+                "type": "boolean",
+                "value": "true"
+            }]
         }
     ]
 }
