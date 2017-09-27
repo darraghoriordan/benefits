@@ -118,8 +118,26 @@ Vue.component('demo-grid', {
     }
 })
 Vue.component('calculator-form', {
-    template:"#calculator-form-template",
+    template: "#calculator-form-template",
+    data: function () {
+        return {
+            leftSalary: 0,
+            rightSalary: 0
+        }
+    },
+    watch: {
+        leftSalary: function (val, oldVal) {
+            this.$emit('changeLeftSalaryValue', val)
+        },
+        rightSalary: function (val, oldVal) {
+            this.$emit('changeRightSalaryValue', val)
+        }
+    }
+})
 
+Vue.component('calculator-results', {
+    template: "#calculator-results-template",
+    props: ['leftSalaryValue', 'rightSalaryValue', 'leftSalaryFuture', 'totalEarned']
 })
 
 Vue.component('company-selection', {
@@ -164,12 +182,42 @@ new Vue({
     data: {
         companyCollection: [],
         leftThing: {},
-        rightThing: {}
+        rightThing: {},
+        leftSalary: 0,
+        rightSalary:0,
+        leftSalaryFuture: [] ,  //these should be computed in the component prolly   
+        totalEarned: 0
     },
     created: function () {
         this.loadData()
     },
     methods: {
+        changeLeftSalaryValue: function (value) {
+            this.leftSalaryFuture = [];
+            this.leftSalary = value;
+            let kiwisaverPercent = 0.03;
+            this.leftSalaryFuture.push({
+                year:1,
+                value:Math.floor(value+ ((kiwisaverPercent *value )))
+            })
+            //calc a 3% raise each year
+            for (i = 1;i < 5;i++){
+                let thisYearSalary =Math.floor( value * (Math.pow((1 + (.03+kiwisaverPercent)/1),i)))
+                this.leftSalaryFuture.push({
+                    year:1+i,
+                    value:thisYearSalary
+                })
+            }
+
+            this.totalEarned = this.leftSalaryFuture.reduce(
+                function(accumulator, currentValue){
+                    return accumulator + currentValue.value;
+                },0
+            )
+        },
+        changeRightSalaryValue: function (value) {
+            this.rightSalary = value
+        },
         selectedLeft: function (value) {
             let localValue = value;
             this.leftThing = this.companyCollection.find(
@@ -177,7 +225,6 @@ new Vue({
                     let result = x.company.find(n => n.name == "Company Name").value === localValue;
                     return result;
                 })
-
         },
         selectedRight: function (value) {
             let localValue = value;
@@ -187,7 +234,6 @@ new Vue({
                     return result;
                 }
             )
-
         },
         loadData: function () {
             var ctrl = this;

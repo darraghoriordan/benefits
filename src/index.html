@@ -54,17 +54,25 @@
 </script>
 <script type="text/x-template" id="calculator-form-template">
     <div>
-        <input v-model="salary" placeholder="salary">
-        <input v-model="superannuation" placeholder="superannuation %">
+        <label for="leftSalary">Salary</label>
+        <input v-model.number="leftSalary" placeholder="salary" type="number" id="leftSalary">
+        <label for="rightSalary">Salary</label>
+        <input v-model.number="rightSalary" placeholder="salary" type="number" id="rightSalary">
     </div>
 </script>
-<script type="text/x-template" id="calculator-results-template" :annualised-salary>
+<script type="text/x-template" id="calculator-results-template">
     <div>
-        
+        Old Salary: {{ leftSalaryValue }} New Salary: {{ rightSalaryValue }} </br> old salary future:
+        <ul>
+            <li v-for="salary in leftSalaryFuture">Year {{ salary.year }} - {{ salary.value }}</li>
+        </ul>
+        total earned: {{ totalEarned }}
     </div>
 </script>
 <script type="text/x-template" id="app-template">
     <div style="margin-left:auto;margin-right:auto;width:80%">
+        <calculator-form @changeLeftSalaryValue="changeLeftSalaryValue" @changeRightSalaryValue="changeRightSalaryValue"></calculator-form>
+        <calculator-results :total-earned="totalEarned" :left-salary-value="leftSalary" :right-salary-value="rightSalary" :left-salary-future="leftSalaryFuture"></calculator-results>
         <company-selection @selected="selectedLeft" :company-collection="companyCollection">
         </company-selection>
         <company-selection @selected="selectedRight" :company-collection="companyCollection">

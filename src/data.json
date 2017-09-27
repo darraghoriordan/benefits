@@ -18,6 +18,14 @@
                 "name": "Kiwisaver",
                 "type": "percent",
                 "value": 3
+            }, {
+                "name": "Parental Leave (self)",
+                "type": "timespan",
+                "value": "4w"
+            }, {
+                "name": "Parental Leave (partner)",
+                "type": "timespan",
+                "value": "2w"
             }],
             "technology": [{
                 "name": "Web Backend",
