@@ -10,6 +10,7 @@
     <meta name="author" content="Darragh ORiordan">
     <script src="https://unpkg.com/vue"></script>
     <link rel="stylesheet" href="app.css?v=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js" integrity="sha256-c7xMHIas8tWM77oqZNaHmN2z7Jz91uNC+w8CYBdDtqg=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek="
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.6/marked.min.js" integrity="sha256-mJAzKDq6kSoKqZKnA6UNLtPaIj8zT2mFnWu/GSouhgQ="
@@ -54,25 +55,26 @@
 </script>
 <script type="text/x-template" id="calculator-form-template">
     <div>
-        <label for="leftSalary">Salary</label>
-        <input v-model.number="leftSalary" placeholder="salary" type="number" id="leftSalary">
-        <label for="rightSalary">Salary</label>
-        <input v-model.number="rightSalary" placeholder="salary" type="number" id="rightSalary">
+        <label for="salaryValue">Salary</label>
+        <input v-model.number="salaryValue" placeholder="salary" type="number" id="salaryValue">
     </div>
 </script>
 <script type="text/x-template" id="calculator-results-template">
     <div>
-        Old Salary: {{ leftSalaryValue }} New Salary: {{ rightSalaryValue }} </br> old salary future:
+        Old Salary: {{ salaryValue }}
+        </br> old salary future:
         <ul>
-            <li v-for="salary in leftSalaryFuture">Year {{ salary.year }} - {{ salary.value }}</li>
+            <li v-for="salary in salaryFuture">Year {{ salary.year }} - {{ salary.value }}</li>
         </ul>
         total earned: {{ totalEarned }}
     </div>
 </script>
 <script type="text/x-template" id="app-template">
     <div style="margin-left:auto;margin-right:auto;width:80%">
-        <calculator-form @changeLeftSalaryValue="changeLeftSalaryValue" @changeRightSalaryValue="changeRightSalaryValue"></calculator-form>
-        <calculator-results :total-earned="totalEarned" :left-salary-value="leftSalary" :right-salary-value="rightSalary" :left-salary-future="leftSalaryFuture"></calculator-results>
+        <calculator-form @changeSalaryValue="changeLeftSalaryValue"></calculator-form>
+        <calculator-form @changeSalaryValue="changeRightSalaryValue"></calculator-form>
+        <calculator-results :salary-value="leftSalary"></calculator-results>
+        <calculator-results :salary-value="rightSalary"></calculator-results>
         <company-selection @selected="selectedLeft" :company-collection="companyCollection">
         </company-selection>
         <company-selection @selected="selectedRight" :company-collection="companyCollection">

@@ -121,23 +121,52 @@ Vue.component('calculator-form', {
     template: "#calculator-form-template",
     data: function () {
         return {
-            leftSalary: 0,
-            rightSalary: 0
+            salaryValue: 0, 
         }
     },
     watch: {
-        leftSalary: function (val, oldVal) {
-            this.$emit('changeLeftSalaryValue', val)
-        },
-        rightSalary: function (val, oldVal) {
-            this.$emit('changeRightSalaryValue', val)
+        salaryValue: function (val, oldVal) {
+            this.$emit('changeSalaryValue', val)
         }
     }
 })
 
 Vue.component('calculator-results', {
     template: "#calculator-results-template",
-    props: ['leftSalaryValue', 'rightSalaryValue', 'leftSalaryFuture', 'totalEarned']
+    data: function () {
+        return {
+            salaryFuture: [],
+            totalEarned: 0
+        };
+    },
+    props: ['salaryValue'],
+    watch: {
+        salaryValue: function () {
+            let value = this.salaryValue;
+
+            this.salaryFuture = [];
+
+            let kiwisaverPercent = 0.03;
+            this.salaryFuture.push({
+                year: 1,
+                value: Math.floor(value + ((kiwisaverPercent * value)))
+            })
+            //calc a 3% raise each year
+            for (i = 1; i < 5; i++) {
+                let thisYearSalary = Math.floor(value * (Math.pow((1 + (.03 + kiwisaverPercent) / 1), i)))
+                this.salaryFuture.push({
+                    year: 1 + i,
+                    value: thisYearSalary
+                })
+            }
+
+            this.totalEarned = this.salaryFuture.reduce(
+                function (accumulator, currentValue) {
+                    return accumulator + currentValue.value;
+                }, 0
+            )
+        }
+    }
 })
 
 Vue.component('company-selection', {
@@ -184,36 +213,14 @@ new Vue({
         leftThing: {},
         rightThing: {},
         leftSalary: 0,
-        rightSalary:0,
-        leftSalaryFuture: [] ,  //these should be computed in the component prolly   
-        totalEarned: 0
+        rightSalary: 0
     },
     created: function () {
         this.loadData()
     },
     methods: {
         changeLeftSalaryValue: function (value) {
-            this.leftSalaryFuture = [];
             this.leftSalary = value;
-            let kiwisaverPercent = 0.03;
-            this.leftSalaryFuture.push({
-                year:1,
-                value:Math.floor(value+ ((kiwisaverPercent *value )))
-            })
-            //calc a 3% raise each year
-            for (i = 1;i < 5;i++){
-                let thisYearSalary =Math.floor( value * (Math.pow((1 + (.03+kiwisaverPercent)/1),i)))
-                this.leftSalaryFuture.push({
-                    year:1+i,
-                    value:thisYearSalary
-                })
-            }
-
-            this.totalEarned = this.leftSalaryFuture.reduce(
-                function(accumulator, currentValue){
-                    return accumulator + currentValue.value;
-                },0
-            )
         },
         changeRightSalaryValue: function (value) {
             this.rightSalary = value
