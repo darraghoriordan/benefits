@@ -121,7 +121,7 @@ Vue.component('calculator-form', {
     template: "#calculator-form-template",
     data: function () {
         return {
-            salaryValue: 0, 
+            salaryValue: 0,
         }
     },
     watch: {
@@ -130,7 +130,40 @@ Vue.component('calculator-form', {
         }
     }
 })
-
+Vue.component('earningDifferenceVisualization', {
+    template: "#earning-visualization",
+    props:['labels', 'companyOneDataset', 'companyTwoDataset', 'companyOneName', 'companyTwoName'],
+    mounted: function () {
+        this.chartInstance = new Chart(this.$el, {
+            type: 'line',
+            data: {
+                labels: this.labels,
+                datasets: [{
+                    data: this.companyOneDataset,
+                    label: this.companyOneName,
+                    borderColor: "#3e95cd",
+                    fill: false
+                }, {
+                    data: this.companyTwoDataset,
+                    label: this.companyTwoName,
+                    borderColor: "#8e5ea2",
+                    fill: false
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Potential future earnings'
+                }
+            }
+        });
+    },
+    data: function () {
+        return {
+            chartInstance: null
+        }
+    }
+})
 Vue.component('calculator-results', {
     template: "#calculator-results-template",
     data: function () {
@@ -213,7 +246,12 @@ new Vue({
         leftThing: {},
         rightThing: {},
         leftSalary: 0,
-        rightSalary: 0
+        rightSalary: 0,
+        graphLabels: ["Year 1", "Year 2", "Year 3", "Year 4", "Year 5"],
+        companyOneDataset:[1,2,3,4,5],
+        companyTwoDataset:[2,4,6,7,8],
+        companyOneName:"",
+        companyTwoName:""
     },
     created: function () {
         this.loadData()
@@ -232,6 +270,7 @@ new Vue({
                     let result = x.company.find(n => n.name == "Company Name").value === localValue;
                     return result;
                 })
+                this.CompanyOneName = this.leftThing.company.find(n => n.name == "Company Name").value
         },
         selectedRight: function (value) {
             let localValue = value;
@@ -241,6 +280,7 @@ new Vue({
                     return result;
                 }
             )
+            this.CompanyTwoName = this.rightThing.company.find(n => n.name == "Company Name").value
         },
         loadData: function () {
             var ctrl = this;
