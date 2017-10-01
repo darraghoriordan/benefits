@@ -207,7 +207,7 @@ Vue.component('calculator-results', {
                 value: Math.floor(value + ((kiwisaverPercent * value)))
             })
             //calc a 3% raise each year
-            for (i = 1; i < 5; i++) {
+            for (i = 1; i < 10; i++) {
                 let thisYearSalary = Math.floor(value * (Math.pow((1 + (.03 + kiwisaverPercent) / 1), i)))
                 this.salaryFuture.push({
                     year: 1 + i,
@@ -247,12 +247,14 @@ Vue.component('company-selection', {
             return list;
         }
     },
-    template: `<select @change="changeItem(rowId, $event)">
-                <option value="">Select a company</option>
+    template: `<div class="form-group">
+                <label for="companySelection">Select Company</label>   
+                <select @change="changeItem(rowId, $event)" class="form-control" id="companySelection">
+                <option value="">Not in list</option>
                 <option :value="item" v-for="item in companyNameList">
                 {{ item }}
                 </option>
-                </select>`,
+                </select></div> `,
     methods: {
         changeItem: function (rowId, event) {
             this.selected = `${rowId}, ${event.target.value}`
@@ -270,7 +272,7 @@ new Vue({
         rightThing: {},
         leftSalary: 0,
         rightSalary: 0,
-        graphLabels: ["Year 1", "Year 2", "Year 3", "Year 4", "Year 5"],
+        graphLabels: ["Year 1", "Year 2", "Year 3", "Year 4", "Year 5", "Year 6", "Year 7", "Year 8", "Year 9", "Year 10"],
         companyOneDataset: [],
         companyTwoDataset: [],
         companyOneName: "",
@@ -301,7 +303,7 @@ new Vue({
                 })
             let foundName = '';
             if (this.leftThing) {
-                 foundName = this.leftThing.company.find(n => n.name == "Company Name").value
+                foundName = this.leftThing.company.find(n => n.name == "Company Name").value
             }
             this.companyOneName = foundName;
         },
@@ -315,7 +317,7 @@ new Vue({
             )
             let foundName = '';
             if (this.rightThing) {
-                 foundName = this.rightThing.company.find(n => n.name == "Company Name").value
+                foundName = this.rightThing.company.find(n => n.name == "Company Name").value
             }
             this.companyTwoName = foundName;
         },

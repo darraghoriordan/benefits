@@ -3,13 +3,19 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>Benefits App</title>
     <meta name="description" content="Vent App">
     <meta name="author" content="Darragh ORiordan">
-    <script src="https://unpkg.com/vue"></script>
+
     <link rel="stylesheet" href="app.css?v=1.0">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+        crossorigin="anonymous">
+    <script src=" https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+        crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js" integrity="sha256-obZACiHd7gkOk9iIL/pimWMTJ4W/pBsKu+oZnSeBIek="
         crossorigin="anonymous"></script>
@@ -17,6 +23,7 @@
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.2/axios.js" integrity="sha256-JXU9bC6uJttvR5dnFkXWImMeNfVl0MwHM8OdBtdGtJs="
         crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/vue"></script>
     <!--[if lt IE 9]>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script>
   <![endif]-->
@@ -27,7 +34,7 @@
 <script type="text/x-template" id="grid-template">
     <div id="comparison-tables-container" style="margin-left:auto;margin-right:auto;width:80%">
         <div v-for="entry in comparisonTable">
-            <table width="100%">
+            <table class="table">
                 <thead>
                     <tr>
                         <th>
@@ -37,13 +44,13 @@
                 </thead>
                 <tbody>
                     <tr v-for="field in entry.fields">
-                        <td width="33%">
+                        <td>
                             {{ field.name }}
                         </td>
-                        <td width="33%">
+                        <td>
                             {{ field.valueX }}
                         </td>
-                        <td width="33%">
+                        <td>
                             {{ field.valueY }}
                         </td>
                     </tr>
@@ -53,9 +60,11 @@
     </div>
 </script>
 <script type="text/x-template" id="calculator-form-template">
-    <div>
-        <label for="salaryValue">Salary</label>
-        <input v-model.number="salaryValue" placeholder="salary" type="number" id="salaryValue">
+    <div class="form-group row">
+        <label for="salaryValue" class="col-2 col-form-label">Salary</label>
+        <div class="col-10">
+            <input v-model.number="salaryValue" class="form-control" placeholder="salary" type="number" id="salaryValue">
+        </div>
     </div>
 </script>
 <script type="text/x-template" id="earning-visualization">
@@ -72,30 +81,47 @@
     </div>
 </script>
 <script type="text/x-template" id="app-template">
-    <div style="margin-left:auto;margin-right:auto;width:80%">
-        <calculator-form @changeSalaryValue="changeLeftSalaryValue"></calculator-form>
-        <calculator-form @changeSalaryValue="changeRightSalaryValue"></calculator-form>
-        <calculator-results :salary-value="leftSalary" @changeSalaryFuture="changeLeftSalaryFuture"></calculator-results>
-        <calculator-results :salary-value="rightSalary" @changeSalaryFuture="changeRightSalaryFuture"></calculator-results>
+    <div class="row">
+        <div class="col-6">
+            <company-selection @selected="selectedLeft" :company-collection="companyCollection">
+            </company-selection>
+            <calculator-form @changeSalaryValue="changeLeftSalaryValue"></calculator-form>
+            <calculator-results :salary-value="leftSalary" @changeSalaryFuture="changeLeftSalaryFuture"></calculator-results>
+        </div>
+        <div class="col-6">
+            <company-selection @selected="selectedRight" :company-collection="companyCollection">
+            </company-selection>
+            <calculator-form @changeSalaryValue="changeRightSalaryValue"></calculator-form>
+            <calculator-results :salary-value="rightSalary" @changeSalaryFuture="changeRightSalaryFuture"></calculator-results>
+        </div>
+        <div class="row">
+            <demo-grid :leftCompare="leftThing" :rightCompare="rightThing"></demo-grid>
+        </div>
         <earning-difference-visualization :labels="graphLabels" :company-one-name="companyOneName" :company-two-name="companyTwoName"
             :company-one-dataset="companyOneDataset" :company-two-dataset="companyTwoDataset"></earning-difference-visualization>
-        <company-selection @selected="selectedLeft" :company-collection="companyCollection">
-        </company-selection>
-        <company-selection @selected="selectedRight" :company-collection="companyCollection">
-        </company-selection>
-        <demo-grid :leftCompare="leftThing" :rightCompare="rightThing"></demo-grid>
+
     </div>
 </script>
 
 <body>
-    <div id="header" style="margin-left:auto;margin-right:auto;width:80%">
-        <span class="header__logo">Benefits</span>
-        <ul class="header__menu">
-            <li class="header__menuitem"><a href="/">Home</a> </li>
-            <li class="header__menuitem"><a href="/about.html">About</a></li>
-        </ul>
-    </div>
-    <div id="appContainer">
+    <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+        <a class="navbar-brand" href="#">Benefits</a>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link" href="/about.html">About</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="appContainer" class="container">
     </div>
 </body>
 
