@@ -75,8 +75,8 @@
     <div style="margin-left:auto;margin-right:auto;width:80%">
         <calculator-form @changeSalaryValue="changeLeftSalaryValue"></calculator-form>
         <calculator-form @changeSalaryValue="changeRightSalaryValue"></calculator-form>
-        <calculator-results :salary-value="leftSalary"></calculator-results>
-        <calculator-results :salary-value="rightSalary"></calculator-results>
+        <calculator-results :salary-value="leftSalary" @changeSalaryFuture="changeLeftSalaryFuture"></calculator-results>
+        <calculator-results :salary-value="rightSalary" @changeSalaryFuture="changeRightSalaryFuture"></calculator-results>
         <earning-difference-visualization :labels="graphLabels" :company-one-name="companyOneName" :company-two-name="companyTwoName"
             :company-one-dataset="companyOneDataset" :company-two-dataset="companyTwoDataset"></earning-difference-visualization>
         <company-selection @selected="selectedLeft" :company-collection="companyCollection">

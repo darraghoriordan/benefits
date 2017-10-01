@@ -45,28 +45,29 @@ Vue.component('demo-grid', {
         },
         getFields: function (companyObjectX, companyObjectY, categoryName) {
             let fieldList = [];
-
-            for (var prop in companyObjectX[categoryName]) {
-                if (!companyObjectX[categoryName].hasOwnProperty(prop)) {
-                    continue;
-                }
-                let currentXProp = companyObjectX[categoryName][prop];
-                let newCombinedProp = {};
-                newCombinedProp.name = currentXProp.name;
-                newCombinedProp.valueX = currentXProp.value;
-
-                if (companyObjectY && companyObjectY[categoryName]) {
-                    let currentYProp = companyObjectY[categoryName].find(x => x.name === currentXProp.name);
-                    if (!currentYProp) {
-                        newCombinedProp.valueY = "Unknown";
-                    } else {
-                        newCombinedProp.valueY = currentYProp.value;
+            if (companyObjectX) {
+                for (var prop in companyObjectX[categoryName]) {
+                    if (!companyObjectX[categoryName].hasOwnProperty(prop)) {
+                        continue;
                     }
-                } else {
-                    newCombinedProp.valueY = "Unknown";
-                }
+                    let currentXProp = companyObjectX[categoryName][prop];
+                    let newCombinedProp = {};
+                    newCombinedProp.name = currentXProp.name;
+                    newCombinedProp.valueX = currentXProp.value;
 
-                fieldList.push(newCombinedProp);
+                    if (companyObjectY && companyObjectY[categoryName]) {
+                        let currentYProp = companyObjectY[categoryName].find(x => x.name === currentXProp.name);
+                        if (!currentYProp) {
+                            newCombinedProp.valueY = "Unknown";
+                        } else {
+                            newCombinedProp.valueY = currentYProp.value;
+                        }
+                    } else {
+                        newCombinedProp.valueY = "Unknown";
+                    }
+
+                    fieldList.push(newCombinedProp);
+                }
             }
 
             if (companyObjectY) {
@@ -76,9 +77,11 @@ Vue.component('demo-grid', {
                         continue;
                     }
                     let currentXProp = null
-                    let currentXCategory = companyObjectX[categoryName];
-                    if (currentXCategory) {
-                        currentXProp = companyObjectX[categoryName][prop];
+                    if (companyObjectX) {
+                        let currentXCategory = companyObjectX[categoryName];
+                        if (currentXCategory) {
+                            currentXProp = companyObjectX[categoryName][prop];
+                        }
                     }
                     if (!currentXProp) {
                         let currentYProp = companyObjectY[categoryName][prop];
@@ -132,38 +135,57 @@ Vue.component('calculator-form', {
 })
 Vue.component('earningDifferenceVisualization', {
     template: "#earning-visualization",
-    props:['labels', 'companyOneDataset', 'companyTwoDataset', 'companyOneName', 'companyTwoName'],
-    mounted: function () {
-        this.chartInstance = new Chart(this.$el, {
-            type: 'line',
-            data: {
-                labels: this.labels,
-                datasets: [{
-                    data: this.companyOneDataset,
-                    label: this.companyOneName,
-                    borderColor: "#3e95cd",
-                    fill: false
-                }, {
-                    data: this.companyTwoDataset,
-                    label: this.companyTwoName,
-                    borderColor: "#8e5ea2",
-                    fill: false
-                }]
-            },
-            options: {
-                title: {
-                    display: true,
-                    text: 'Potential future earnings'
+    props: ['labels', 'companyOneDataset', 'companyTwoDataset', 'companyOneName', 'companyTwoName'],
+    methods: {
+        makeVisualisation: function () {
+            this.chartInstance = new Chart(this.$el, {
+                type: 'line',
+                data: {
+                    labels: this.labels,
+                    datasets: [{
+                        data: this.companyOneDataset.map(x => x.value),
+                        label: this.companyOneName,
+                        borderColor: "#3e95cd",
+                        fill: false
+                    }, {
+                        data: this.companyTwoDataset.map(x => x.value),
+                        label: this.companyTwoName,
+                        borderColor: "#8e5ea2",
+                        fill: false
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: 'Potential future earnings'
+                    }
                 }
-            }
-        });
+            });
+        }
+    },
+    mounted: function () {
+        this.makeVisualisation();
+    },
+    watch: {
+        companyOneDataset: function () {
+            this.makeVisualisation();
+        },
+        companyTwoDataset: function () {
+            this.makeVisualisation();
+        },
+        companyOneName: function () {
+            this.makeVisualisation();
+        },
+        companyTwoName: function () {
+            this.makeVisualisation();
+        }
     },
     data: function () {
         return {
             chartInstance: null
         }
     }
-})
+});
 Vue.component('calculator-results', {
     template: "#calculator-results-template",
     data: function () {
@@ -198,6 +220,7 @@ Vue.component('calculator-results', {
                     return accumulator + currentValue.value;
                 }, 0
             )
+            this.$emit('changeSalaryFuture', this.salaryFuture)
         }
     }
 })
@@ -248,15 +271,21 @@ new Vue({
         leftSalary: 0,
         rightSalary: 0,
         graphLabels: ["Year 1", "Year 2", "Year 3", "Year 4", "Year 5"],
-        companyOneDataset:[1,2,3,4,5],
-        companyTwoDataset:[2,4,6,7,8],
-        companyOneName:"",
-        companyTwoName:""
+        companyOneDataset: [],
+        companyTwoDataset: [],
+        companyOneName: "",
+        companyTwoName: ""
     },
     created: function () {
         this.loadData()
     },
     methods: {
+        changeLeftSalaryFuture: function (value) {
+            this.companyOneDataset = value;
+        },
+        changeRightSalaryFuture: function (value) {
+            this.companyTwoDataset = value;
+        },
         changeLeftSalaryValue: function (value) {
             this.leftSalary = value;
         },
@@ -270,7 +299,11 @@ new Vue({
                     let result = x.company.find(n => n.name == "Company Name").value === localValue;
                     return result;
                 })
-                this.CompanyOneName = this.leftThing.company.find(n => n.name == "Company Name").value
+            let foundName = '';
+            if (this.leftThing) {
+                 foundName = this.leftThing.company.find(n => n.name == "Company Name").value
+            }
+            this.companyOneName = foundName;
         },
         selectedRight: function (value) {
             let localValue = value;
@@ -280,7 +313,11 @@ new Vue({
                     return result;
                 }
             )
-            this.CompanyTwoName = this.rightThing.company.find(n => n.name == "Company Name").value
+            let foundName = '';
+            if (this.rightThing) {
+                 foundName = this.rightThing.company.find(n => n.name == "Company Name").value
+            }
+            this.companyTwoName = foundName;
         },
         loadData: function () {
             var ctrl = this;
