@@ -34,14 +34,8 @@
 <script type="text/x-template" id="grid-template">
     <div id="comparison-tables-container" style="margin-left:auto;margin-right:auto;width:80%">
         <div v-for="entry in comparisonTable">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            {{ entry.name }}
-                        </th>
-                    </tr>
-                </thead>
+            <h3>{{ entry.name }}</h3>
+            <table class="table" width="100%">
                 <tbody>
                     <tr v-for="field in entry.fields">
                         <td>
@@ -81,25 +75,34 @@
     </div>
 </script>
 <script type="text/x-template" id="app-template">
-    <div class="row">
-        <div class="col-6">
-            <company-selection @selected="selectedLeft" :company-collection="companyCollection">
-            </company-selection>
-            <calculator-form @changeSalaryValue="changeLeftSalaryValue"></calculator-form>
-            <calculator-results :salary-value="leftSalary" @changeSalaryFuture="changeLeftSalaryFuture"></calculator-results>
-        </div>
-        <div class="col-6">
-            <company-selection @selected="selectedRight" :company-collection="companyCollection">
-            </company-selection>
-            <calculator-form @changeSalaryValue="changeRightSalaryValue"></calculator-form>
-            <calculator-results :salary-value="rightSalary" @changeSalaryFuture="changeRightSalaryFuture"></calculator-results>
-        </div>
-        <div class="row">
-            <demo-grid :leftCompare="leftThing" :rightCompare="rightThing"></demo-grid>
-        </div>
-        <earning-difference-visualization :labels="graphLabels" :company-one-name="companyOneName" :company-two-name="companyTwoName"
-            :company-one-dataset="companyOneDataset" :company-two-dataset="companyTwoDataset"></earning-difference-visualization>
+    <div>
+        <div class="row ml-1 mr-1">
+            <div class="col-6">
+                <calculator-form @changeSalaryValue="changeLeftSalaryValue"></calculator-form>
+                <company-selection @selected="selectedLeft" :company-collection="companyCollection">
+                </company-selection>
 
+                <calculator-results :salary-value="leftSalary" :company-data="leftCompany" @changeSalaryFuture="changeLeftSalaryFuture"></calculator-results>
+            </div>
+            <div class="col-6">
+                <calculator-form @changeSalaryValue="changeRightSalaryValue"></calculator-form>
+                <company-selection @selected="selectedRight" :company-collection="companyCollection">
+                </company-selection>
+
+                <calculator-results :salary-value="rightSalary" :company-data="rightCompany" @changeSalaryFuture="changeRightSalaryFuture"></calculator-results>
+            </div>
+        </div>
+        <hr>
+        <div class="row ml-1 mr-1">
+            <div class="col">
+                <comparison-grid :leftCompany="leftCompany" :rightCompany="rightCompany"></comparison-grid>
+            </div>
+        </div>
+        <div class="row ml-1 mr-1">
+            <earning-difference-visualization :labels="graphLabels" :company-one-name="companyOneName" :company-two-name="companyTwoName"
+                :company-one-dataset="companyOneDataset" :company-two-dataset="companyTwoDataset"></earning-difference-visualization>
+
+        </div>
     </div>
 </script>
 

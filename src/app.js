@@ -1,5 +1,5 @@
 // register the grid component
-Vue.component('demo-grid', {
+Vue.component('comparison-grid', {
     template: '#grid-template',
     methods: {
         getCategoryNameCollection: function (companyX, companyY) {
@@ -100,17 +100,17 @@ Vue.component('demo-grid', {
         }
     },
     props: {
-        leftCompare: {},
-        rightCompare: {}
+        leftCompany: {},
+        rightCompany: {}
     },
     computed: {
         comparisonTable: function () {
             let combinedData = [];
 
-            this.getCategoryNameCollection(this.leftCompare, this.rightCompare).forEach(function (element) {
+            this.getCategoryNameCollection(this.leftCompany, this.rightCompany).forEach(function (element) {
                 let category = {};
                 category.name = element;
-                category.fields = this.getFields(this.leftCompare, this.rightCompare, category.name)
+                category.fields = this.getFields(this.leftCompany, this.rightCompany, category.name)
 
                 combinedData.push(category);
             }, this);
@@ -268,8 +268,8 @@ new Vue({
     template: '#app-template',
     data: {
         companyCollection: [],
-        leftThing: {},
-        rightThing: {},
+        leftCompany: {},
+        rightCompany: {},
         leftSalary: 0,
         rightSalary: 0,
         graphLabels: ["Year 1", "Year 2", "Year 3", "Year 4", "Year 5", "Year 6", "Year 7", "Year 8", "Year 9", "Year 10"],
@@ -296,28 +296,28 @@ new Vue({
         },
         selectedLeft: function (value) {
             let localValue = value;
-            this.leftThing = this.companyCollection.find(
+            this.leftCompany = this.companyCollection.find(
                 function (x) {
                     let result = x.company.find(n => n.name == "Company Name").value === localValue;
                     return result;
                 })
             let foundName = '';
-            if (this.leftThing) {
-                foundName = this.leftThing.company.find(n => n.name == "Company Name").value
+            if (this.leftCompany) {
+                foundName = this.leftCompany.company.find(n => n.name == "Company Name").value
             }
             this.companyOneName = foundName;
         },
         selectedRight: function (value) {
             let localValue = value;
-            this.rightThing = this.companyCollection.find(
+            this.rightCompany = this.companyCollection.find(
                 function (x) {
                     let result = x.company.find(n => n.name == "Company Name").value === localValue;
                     return result;
                 }
             )
             let foundName = '';
-            if (this.rightThing) {
-                foundName = this.rightThing.company.find(n => n.name == "Company Name").value
+            if (this.rightCompany) {
+                foundName = this.rightCompany.company.find(n => n.name == "Company Name").value
             }
             this.companyTwoName = foundName;
         },
