@@ -18,17 +18,17 @@
                 "name": "Kiwisaver",
                 "type": "percent",
                 "amortise":"1",
-                "value": 3
+                "value": "3"
             }, {
                 "name": "Parental Leave (self)",
-                "type": "timespan",
+                "type": "dayLeave",
                 "amortise": "5",
-                "value": "4w"
+                "value": "20"
             }, {
                 "name": "Parental Leave (partner)",
-                "type": "timespan",
+                "type": "dayLeave",
                 "amortise": "5",
-                "value": "2w"
+                "value": "10"
             }],
             "technology": [{
                 "name": "Web Backend",
@@ -78,22 +78,22 @@
                 "value": 4
             }, {
                 "name": "Volunteer Day(s)",
-                "type": "timespan",
+                "type": "dayLeave",
                 "amortise": "1",
-                "value": "1d"
+                "value": "1"
             }, {
                 "name": "Energy Services Discount",
-                "type": "value",
+                "type": "fixedAmount",
                 "amortise": "1",
                 "value": "140"
             }, {
                 "name": "Health Insurance",
-                "type": "value",
+                "type": "fixedAmount",
                 "amortise": "1",
                 "value": "140"
             }, {
                 "name": "Life Insurance",
-                "type": "value",
+                "type": "fixedAmount",
                 "amortise": "1",
                 "value": "140"
             }, {
@@ -102,7 +102,7 @@
                 "value": "true"
             }, {
                 "name": "Income Protection Insurance",
-                "type": "value",
+                "type": "fixedAmount",
                 "amortise": "1",
                 "value": "100"
             }, {
@@ -111,7 +111,7 @@
                 "value": "true"
             }, {
                 "name": "Employee Referral Scheme",
-                "type": "value",
+                "type": "fixedAmount",
                 "amortise": "0",
                 "value": "1500"
             }]
