@@ -13,7 +13,7 @@ export default {
     template: '#calculator-form-template',
     data: function() {
         return {
-            salaryValue: 0,
+            salaryValue: 0
         }
     },
     watch: {

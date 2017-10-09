@@ -2,14 +2,14 @@
     <div>
         <div class="row ml-1 mr-1">
             <div class="col-6">
-                <calculator-form @changeSalaryValue="changeLeftSalaryValue"></calculator-form>
+                <CalculatorForm @changeSalaryValue="changeLeftSalaryValue"></CalculatorForm>
                 <company-selection @selected="selectedLeft" :company-collection="companyCollection">
                 </company-selection>
 
                 <calculator-results :salary-value="leftSalary" :company-data="leftCompany" @changeSalaryFuture="changeLeftSalaryFuture"></calculator-results>
             </div>
             <div class="col-6">
-                <calculator-form @changeSalaryValue="changeRightSalaryValue"></calculator-form>
+                <CalculatorForm @changeSalaryValue="changeRightSalaryValue"></CalculatorForm>
                 <company-selection @selected="selectedRight" :company-collection="companyCollection">
                 </company-selection>
 
@@ -31,9 +31,10 @@
 
 <script>
 import axios from 'axios'
-
+import CalculatorForm from './CalculatorForm'
 export default {
     name: 'CalculatorPage',
+    components: { CalculatorForm },
     data: function() {
         return {
             companyCollection: [],
