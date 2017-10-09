@@ -30,9 +30,11 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-    name: "CalculatorPage",
-    data: function() {
+    name: 'CalculatorPage',
+    data: function () {
         return {
             companyCollection: [],
             leftCompany: {},
@@ -62,12 +64,12 @@ export default {
         changeRightSalaryValue: function (value) {
             this.rightSalary = value
         },
-        selectedLeft: function(value) {
-            let localValue = value;
+        selectedLeft: function (value) {
+            let localValue = value
             this.leftCompany = this.companyCollection.find(
-                function(x) {
-                    let result = x.company.find(n => n.name === 'Company Name').value === localValue;
-                    return result;
+                function (x) {
+                    let result = x.company.find(n => n.name === 'Company Name').value === localValue
+                    return result
                 })
             let foundName = ''
             if (this.leftCompany) {
@@ -80,17 +82,17 @@ export default {
             this.rightCompany = this.companyCollection.find(
                 function (x) {
                     let result = x.company.find(n => n.name === 'Company Name').value === localValue
-                    return result;
+                    return result
                 }
             )
             let foundName = ''
             if (this.rightCompany) {
                 foundName = this.rightCompany.company.find(n => n.name === 'Company Name').value
             }
-            this.companyTwoName = foundName;
+            this.companyTwoName = foundName
         },
-        loadData: function() {
-            var ctrl = this;
+        loadData: function () {
+            var ctrl = this
             axios.get('/data.json', {
                 'encodingType': 'UTF8'
             })
