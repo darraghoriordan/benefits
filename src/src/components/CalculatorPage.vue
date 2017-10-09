@@ -34,7 +34,7 @@ import axios from 'axios'
 
 export default {
     name: 'CalculatorPage',
-    data: function () {
+    data: function() {
         return {
             companyCollection: [],
             leftCompany: {},
@@ -52,22 +52,22 @@ export default {
         this.loadData()
     },
     methods: {
-        changeLeftSalaryFuture: function (value) {
+        changeLeftSalaryFuture: function(value) {
             this.companyOneDataset = value
         },
-        changeRightSalaryFuture: function (value) {
+        changeRightSalaryFuture: function(value) {
             this.companyTwoDataset = value
         },
-        changeLeftSalaryValue: function (value) {
+        changeLeftSalaryValue: function(value) {
             this.leftSalary = value
         },
-        changeRightSalaryValue: function (value) {
+        changeRightSalaryValue: function(value) {
             this.rightSalary = value
         },
-        selectedLeft: function (value) {
+        selectedLeft: function(value) {
             let localValue = value
             this.leftCompany = this.companyCollection.find(
-                function (x) {
+                function(x) {
                     let result = x.company.find(n => n.name === 'Company Name').value === localValue
                     return result
                 })
@@ -77,10 +77,10 @@ export default {
             }
             this.companyOneName = foundName
         },
-        selectedRight: function (value) {
+        selectedRight: function(value) {
             let localValue = value
             this.rightCompany = this.companyCollection.find(
-                function (x) {
+                function(x) {
                     let result = x.company.find(n => n.name === 'Company Name').value === localValue
                     return result
                 }
@@ -91,12 +91,12 @@ export default {
             }
             this.companyTwoName = foundName
         },
-        loadData: function () {
+        loadData: function() {
             var ctrl = this
             axios.get('/data.json', {
                 'encodingType': 'UTF8'
             })
-                .then(function (response) {
+                .then(function(response) {
                     ctrl.companyCollection = response.data.data
                 })
         }
