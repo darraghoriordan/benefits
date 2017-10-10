@@ -29,9 +29,9 @@ export default {
     computed: {
         companyNameList: function() {
             let list = this.companyCollection.map(
-                x => x.company.find(n => n.name == 'Company Name').value
-            );
-            return list;
+                x => x.company.find(n => n.name === 'Company Name').value
+            )
+            return list
         }
     },
     methods: {

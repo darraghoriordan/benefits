@@ -4,8 +4,10 @@
 </template>
 
 <script>
+import Chart from 'chartjs'
+
 export default {
-    name: 'EarningVisualization',
+    name: 'EarningVisualisation',
     props: ['labels', 'companyOneDataset', 'companyTwoDataset', 'companyOneName', 'companyTwoName'],
     methods: {
         makeVisualisation: function() {
@@ -31,24 +33,24 @@ export default {
                         text: 'Potential future earnings'
                     }
                 }
-            });
+            })
         }
     },
     mounted: function() {
-        this.makeVisualisation();
+        this.makeVisualisation()
     },
     watch: {
         companyOneDataset: function() {
-            this.makeVisualisation();
+            this.makeVisualisation()
         },
         companyTwoDataset: function() {
-            this.makeVisualisation();
+            this.makeVisualisation()
         },
         companyOneName: function() {
-            this.makeVisualisation();
+            this.makeVisualisation()
         },
         companyTwoName: function() {
-            this.makeVisualisation();
+            this.makeVisualisation()
         }
     },
     data: function() {

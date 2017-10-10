@@ -1,0 +1,120 @@
+{
+    "data": [{
+            "company": [{
+                "name": "Company Name",
+                "type": "string",
+                "value": "Trade Me Ltd"
+            }, {
+                "name": "Location",
+                "type": "string",
+                "value": "Auckland, New Zealand"
+            }],
+            "perks": [{
+                "name": "Free Expresso Coffee",
+                "type": "bool",
+                "value": "true"
+            }],
+            "benefits": [{
+                "name": "Kiwisaver",
+                "type": "percent",
+                "amortise":"1",
+                "value": "3"
+            }, {
+                "name": "Parental Leave (self)",
+                "type": "dayLeave",
+                "amortise": "5",
+                "value": "20"
+            }, {
+                "name": "Parental Leave (partner)",
+                "type": "dayLeave",
+                "amortise": "5",
+                "value": "10"
+            }],
+            "technology": [{
+                "name": "Web Backend",
+                "type": "text",
+                "value": ".Net"
+            }, {
+                "name": "Database Backend",
+                "type": "text",
+                "value": "SQL Server"
+            }, {
+                "name": "Web Front End",
+                "type": "text",
+                "value": "Asp.Net"
+            }, {
+                "name": "Native iOS",
+                "type": "text",
+                "value": "Objective-C and Swift"
+            }, {
+                "name": "Native Android",
+                "type": "text",
+                "value": "Java and Kotlin"
+            }]
+        },
+        {
+            "company": [{
+                "name": "Company Name",
+                "type": "string",
+                "value": "Genesis Energy"
+            }, {
+                "name": "Location",
+                "type": "string",
+                "value": "Auckland, New Zealand"
+            }],
+            "perks": [{
+                "name": "Free Expresso Coffee",
+                "type": "bool",
+                "value": "true"
+            }, {
+                "name": "Social Club",
+                "type": "bool",
+                "value": "true"
+            }],
+            "benefits": [{
+                "name": "Kiwisaver",
+                "type": "percent",
+                "amortise":"1",
+                "value": 4
+            }, {
+                "name": "Volunteer Day(s)",
+                "type": "dayLeave",
+                "amortise": "1",
+                "value": "1"
+            }, {
+                "name": "Energy Services Discount",
+                "type": "fixedAmount",
+                "amortise": "1",
+                "value": "140"
+            }, {
+                "name": "Health Insurance",
+                "type": "fixedAmount",
+                "amortise": "1",
+                "value": "140"
+            }, {
+                "name": "Life Insurance",
+                "type": "fixedAmount",
+                "amortise": "1",
+                "value": "140"
+            }, {
+                "name": "Trauma Insurance",
+                "type": "boolean",
+                "value": "true"
+            }, {
+                "name": "Income Protection Insurance",
+                "type": "fixedAmount",
+                "amortise": "1",
+                "value": "100"
+            }, {
+                "name": "Employee Share Scheme",
+                "type": "boolean",
+                "value": "true"
+            }, {
+                "name": "Employee Referral Scheme",
+                "type": "fixedAmount",
+                "amortise": "0",
+                "value": "1500"
+            }]
+        }
+    ]
+}

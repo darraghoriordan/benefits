@@ -26,100 +26,100 @@ export default {
     name: 'ComparisonGrid',
     methods: {
         getCategoryNameCollection: function(companyX, companyY) {
-            let categoryNameCollection = [];
+            let categoryNameCollection = []
 
             for (var key in companyX) {
                 if (!companyX.hasOwnProperty(key)) {
-                    continue;
+                    continue
                 }
-                categoryNameCollection.push(key);
+                categoryNameCollection.push(key)
             }
-            for (var key in companyY) {
-                if (!companyY.hasOwnProperty(key)) {
-                    continue;
+            for (var ykey in companyY) {
+                if (!companyY.hasOwnProperty(ykey)) {
+                    continue
                 }
                 if (categoryNameCollection.find(
                     function(element) {
-                        return element == key;
+                        return element === ykey
                     }
                 )) {
-                    continue;
+                    continue
                 }
-                categoryNameCollection.push(key);
+                categoryNameCollection.push(ykey)
             }
 
-            return categoryNameCollection;
+            return categoryNameCollection
         },
         calcualteValue: function(prop) {
             if (!prop) {
-                return 'Unknown';
+                return 'Unknown'
             }
-            if (prop.type == 'bool') {
-                if (prop.value == 'true') {
+            if (prop.type === 'bool') {
+                if (prop.value === 'true') {
                     return 'Yes'
                 }
-                return 'No';
+                return 'No'
             }
-            if (prop.type == 'percent') {
-                return prop.value + '%';
+            if (prop.type === 'percent') {
+                return prop.value + '%'
             }
 
-            return prop.value;
+            return prop.value
         },
         getFields: function(companyObjectX, companyObjectY, categoryName) {
-            let fieldList = [];
+            let fieldList = []
             if (companyObjectX) {
                 for (var prop in companyObjectX[categoryName]) {
                     if (!companyObjectX[categoryName].hasOwnProperty(prop)) {
-                        continue;
+                        continue
                     }
-                    let currentXProp = companyObjectX[categoryName][prop];
-                    let newCombinedProp = {};
-                    newCombinedProp.name = currentXProp.name;
-                    newCombinedProp.valueX = currentXProp.value;
+                    let currentXProp = companyObjectX[categoryName][prop]
+                    let newCombinedProp = {}
+                    newCombinedProp.name = currentXProp.name
+                    newCombinedProp.valueX = currentXProp.value
 
                     if (companyObjectY && companyObjectY[categoryName]) {
-                        let currentYProp = companyObjectY[categoryName].find(x => x.name === currentXProp.name);
+                        let currentYProp = companyObjectY[categoryName].find(x => x.name === currentXProp.name)
                         if (!currentYProp) {
-                            newCombinedProp.valueY = 'Unknown';
+                            newCombinedProp.valueY = 'Unknown'
                         } else {
-                            newCombinedProp.valueY = currentYProp.value;
+                            newCombinedProp.valueY = currentYProp.value
                         }
                     } else {
-                        newCombinedProp.valueY = 'Unknown';
+                        newCombinedProp.valueY = 'Unknown'
                     }
 
-                    fieldList.push(newCombinedProp);
+                    fieldList.push(newCombinedProp)
                 }
             }
 
             if (companyObjectY) {
-                for (var prop in companyObjectY[categoryName]) {
-                    if (!companyObjectY[categoryName].hasOwnProperty(prop)) {
+                for (var yprop in companyObjectY[categoryName]) {
+                    if (!companyObjectY[categoryName].hasOwnProperty(yprop)) {
                         // not a specific property
-                        continue;
+                        continue
                     }
                     let currentXProp = null
                     if (companyObjectX) {
-                        let currentXCategory = companyObjectX[categoryName];
+                        let currentXCategory = companyObjectX[categoryName]
                         if (currentXCategory) {
-                            currentXProp = companyObjectX[categoryName][prop];
+                            currentXProp = companyObjectX[categoryName][yprop]
                         }
                     }
                     if (!currentXProp) {
-                        let currentYProp = companyObjectY[categoryName][prop];
+                        let currentYProp = companyObjectY[categoryName][yprop]
 
-                        let newCombinedProp = {};
-                        newCombinedProp.name = currentYProp.name;
-                        newCombinedProp.valueY = currentYProp.value;
-                        newCombinedProp.valueX = 'Unknown';
+                        let newCombinedProp = {}
+                        newCombinedProp.name = currentYProp.name
+                        newCombinedProp.valueY = currentYProp.value
+                        newCombinedProp.valueX = 'Unknown'
 
-                        fieldList.push(newCombinedProp);
+                        fieldList.push(newCombinedProp)
                     }
                 }
             }
 
-            return fieldList;
+            return fieldList
         }
     },
     props: {
@@ -128,17 +128,17 @@ export default {
     },
     computed: {
         comparisonTable: function() {
-            let combinedData = [];
+            let combinedData = []
 
             this.getCategoryNameCollection(this.leftCompany, this.rightCompany).forEach(function(element) {
-                let category = {};
-                category.name = element;
+                let category = {}
+                category.name = element
                 category.fields = this.getFields(this.leftCompany, this.rightCompany, category.name)
 
-                combinedData.push(category);
-            }, this);
+                combinedData.push(category)
+            }, this)
 
-            return combinedData;
+            return combinedData
         }
 
     }

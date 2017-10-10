@@ -3,27 +3,29 @@
         <div class="row ml-1 mr-1">
             <div class="col-6">
                 <CalculatorForm @changeSalaryValue="changeLeftSalaryValue"></CalculatorForm>
-                <company-selection @selected="selectedLeft" :company-collection="companyCollection">
-                </company-selection>
+                <CompanySelection @selected="selectedLeft" :company-collection="companyCollection">
+                </CompanySelection>
 
-                <calculator-results :salary-value="leftSalary" :company-data="leftCompany" @changeSalaryFuture="changeLeftSalaryFuture"></calculator-results>
+                <CalculatorResults :salary-value="leftSalary" :company-data="leftCompany" @changeSalaryFuture="changeLeftSalaryFuture">
+                </CalculatorResults>
             </div>
             <div class="col-6">
                 <CalculatorForm @changeSalaryValue="changeRightSalaryValue"></CalculatorForm>
-                <company-selection @selected="selectedRight" :company-collection="companyCollection">
-                </company-selection>
+                <CompanySelection @selected="selectedRight" :company-collection="companyCollection">
+                </CompanySelection>
 
-                <calculator-results :salary-value="rightSalary" :company-data="rightCompany" @changeSalaryFuture="changeRightSalaryFuture"></calculator-results>
+                <CalculatorResults :salary-value="rightSalary" :company-data="rightCompany" @changeSalaryFuture="changeRightSalaryFuture"></CalculatorResults>
             </div>
         </div>
         <hr>
         <div class="row ml-1 mr-1">
             <div class="col">
-                <comparison-grid :leftCompany="leftCompany" :rightCompany="rightCompany"></comparison-grid>
+                <ComparisonGrid :leftCompany="leftCompany" :rightCompany="rightCompany"></ComparisonGrid>
             </div>
         </div>
         <div class="row ml-1 mr-1">
-            <earning-difference-visualization :labels="graphLabels" :company-one-name="companyOneName" :company-two-name="companyTwoName" :company-one-dataset="companyOneDataset" :company-two-dataset="companyTwoDataset"></earning-difference-visualization>
+            <EarningVisualisation :labels="graphLabels" :company-one-name="companyOneName" :company-two-name="companyTwoName" :company-one-dataset="companyOneDataset" :company-two-dataset="companyTwoDataset">
+            </EarningVisualisation>
 
         </div>
     </div>
@@ -32,9 +34,14 @@
 <script>
 import axios from 'axios'
 import CalculatorForm from './CalculatorForm'
+import CompanySelection from './CompanySelection'
+import CalculatorResults from './CalculatorResults'
+import ComparisonGrid from './ComparisonGrid'
+import EarningVisualisation from './EarningVisualisation'
+
 export default {
     name: 'CalculatorPage',
-    components: { CalculatorForm },
+    components: { CalculatorForm, CompanySelection, CalculatorResults, ComparisonGrid, EarningVisualisation },
     data: function() {
         return {
             companyCollection: [],
@@ -94,7 +101,7 @@ export default {
         },
         loadData: function() {
             var ctrl = this
-            axios.get('/data.json', {
+            axios.get('/static/data.json', {
                 'encodingType': 'UTF8'
             })
                 .then(function(response) {
