@@ -1,5 +1,6 @@
 <template>
     <div>
+        <span class="biggestest">{{ salaryDifference | currency }}</span>
         <div class="row ml-1 mr-1">
             <div class="col-6">
                 <CalculatorForm @input="changeLeftSalaryValue"></CalculatorForm>
@@ -57,6 +58,18 @@ export default {
     created: function() {
         this.loadData()
     },
+    computed: {
+        salaryDifference: function() {
+            let oneSum = this.companyOneDataset.reduce((a, b) => a + b.value, 0)
+            let twoSum = this.companyTwoDataset.reduce((a, b) => a + b.value, 0)
+            return twoSum - oneSum
+        }
+    },
+    filters: {
+        currency: function(value) {
+            return '$' + value.toFixed(2)
+        }
+    },
     methods: {
         changeLeftSalaryFuture: function(value) {
             this.companyOneDataset = value
@@ -109,3 +122,10 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.biggestest {
+    font-size: 3em;
+    color: green;
+}
+</style>
