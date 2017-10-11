@@ -19,16 +19,6 @@
                 "type": "percent",
                 "amortise":"1",
                 "value": "3"
-            }, {
-                "name": "Parental Leave (self)",
-                "type": "dayLeave",
-                "amortise": "5",
-                "value": "20"
-            }, {
-                "name": "Parental Leave (partner)",
-                "type": "dayLeave",
-                "amortise": "5",
-                "value": "10"
             }],
             "technology": [{
                 "name": "Web Backend",
@@ -85,35 +75,17 @@
                 "name": "Energy Services Discount",
                 "type": "fixedAmount",
                 "amortise": "1",
-                "value": "140"
+                "value": "200"
             }, {
                 "name": "Health Insurance",
                 "type": "fixedAmount",
                 "amortise": "1",
-                "value": "140"
+                "value": "1000"
             }, {
-                "name": "Life Insurance",
+                "name": "Insurance Cover",
                 "type": "fixedAmount",
                 "amortise": "1",
-                "value": "140"
-            }, {
-                "name": "Trauma Insurance",
-                "type": "boolean",
-                "value": "true"
-            }, {
-                "name": "Income Protection Insurance",
-                "type": "fixedAmount",
-                "amortise": "1",
-                "value": "100"
-            }, {
-                "name": "Employee Share Scheme",
-                "type": "boolean",
-                "value": "true"
-            }, {
-                "name": "Employee Referral Scheme",
-                "type": "fixedAmount",
-                "amortise": "0",
-                "value": "1500"
+                "value": "550"
             }]
         }
     ]

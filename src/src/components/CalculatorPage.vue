@@ -2,18 +2,16 @@
     <div>
         <div class="row ml-1 mr-1">
             <div class="col-6">
-                <CalculatorForm @changeSalaryValue="changeLeftSalaryValue"></CalculatorForm>
+                <CalculatorForm @input="changeLeftSalaryValue"></CalculatorForm>
                 <CompanySelection @selected="selectedLeft" :company-collection="companyCollection">
                 </CompanySelection>
-
                 <CalculatorResults :salary-value="leftSalary" :company-data="leftCompany" @changeSalaryFuture="changeLeftSalaryFuture">
                 </CalculatorResults>
             </div>
             <div class="col-6">
-                <CalculatorForm @changeSalaryValue="changeRightSalaryValue"></CalculatorForm>
+                <CalculatorForm @input="changeRightSalaryValue"></CalculatorForm>
                 <CompanySelection @selected="selectedRight" :company-collection="companyCollection">
                 </CompanySelection>
-
                 <CalculatorResults :salary-value="rightSalary" :company-data="rightCompany" @changeSalaryFuture="changeRightSalaryFuture"></CalculatorResults>
             </div>
         </div>

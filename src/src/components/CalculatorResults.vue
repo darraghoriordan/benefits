@@ -3,9 +3,9 @@
         Old Salary: {{ salaryValue }}
         </br> old salary future:
         <ul>
-            <li v-for="salary in salaryFuture">Year {{ salary.year }} - {{ salary.value }}</li>
+            <li v-for="salary in futureSalaries">Year {{ salary.year }} - {{ salary.value | currency}}</li>
         </ul>
-        total earned: {{ totalEarned }}
+        total earned: {{ totalEarned | currency }}
     </div>
 </template>
 
@@ -19,6 +19,11 @@ export default {
         }
     },
     props: ['salaryValue', 'companyData'],
+    filters: {
+        currency: function(value) {
+            return '$' + value.toFixed(2)
+        }
+    },
     methods: {
         calculateFixedBenefits: function(annualSalary, companyData) {
             if (!companyData || !companyData.benefits) {
@@ -31,24 +36,29 @@ export default {
                 return previousValue
             }, 0)
             // get all type: fixedAmount
-            // divide value by amortisation
-            // sum
+            let fixedAmountBenefits = companyData.benefits.filter(n => n.type === 'fixedAmount')
+            let fixedAmountAmount = fixedAmountBenefits.reduce(function(previousValue, currentValue) {
+                previousValue += (currentValue.value / currentValue.amortise)
+                return previousValue
+            }, 0)
 
             // get all type:daysLeave
-            // (salary * time)/(amortization [if any])  = (salaryValue)/(40*52) *  ((8 * daysLeaveValue) / amortization)
-            // sum
-
-            return percentageSum
+            let dayLeaveBenefits = companyData.benefits.filter(n => n.type === 'dayLeave')
+            let dayLeaveAmount = dayLeaveBenefits.reduce(function(previousValue, currentValue) {
+                previousValue += (((annualSalary / (5 * 52)) * currentValue.value) / currentValue.amortise)
+                return previousValue
+            }, 0)
+            return percentageSum + fixedAmountAmount + dayLeaveAmount
         }
     },
-    watch: {
-        salaryValue: function() {
+    computed: {
+        futureSalaries: function() {
             let value = this.salaryValue
 
-            this.salaryFuture = []
+            let salaryFuture = []
             let numberOfYearsToCalculate = 5
             let standardAnnualRaisePercent = 0.03
-            this.salaryFuture.push({
+            salaryFuture.push({
                 year: 1,
                 value: value + this.calculateFixedBenefits(value, this.companyData)
             })
@@ -56,18 +66,19 @@ export default {
             for (var i = 1; i < numberOfYearsToCalculate; i++) {
                 let thisYearSalary = Math.floor(value * (Math.pow((1 + (standardAnnualRaisePercent) / 1), i)))
                 let bfSum = this.calculateFixedBenefits(thisYearSalary, this.companyData)
-                this.salaryFuture.push({
+                salaryFuture.push({
                     year: 1 + i,
                     value: thisYearSalary + bfSum
                 })
             }
 
-            this.totalEarned = this.salaryFuture.reduce(
+            this.totalEarned = salaryFuture.reduce(
                 function(accumulator, currentValue) {
                     return accumulator + currentValue.value
                 }, 0
             )
-            this.$emit('changeSalaryFuture', this.salaryFuture)
+            this.$emit('changeSalaryFuture', salaryFuture)
+            return salaryFuture
         }
     }
 }
