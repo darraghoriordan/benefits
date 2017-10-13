@@ -1,14 +1,13 @@
 <template>
     <div>
         <label for="salaryValue">Salary</label>
-        <input v-bind:value="value" v-on:input="updateValue($event.target.value)" ref="input" placeholder="salary" id="salaryValue">
+        <input v-bind:value="value" v-on:input="updateValue($event.target.value)" ref="input" placeholder="salary">
     </div>
 </template>
 
 <script>
 export default {
-    name: 'CalculatorForm',
-    template: '#calculator-form-template',
+    name: 'SalaryInput',
     props: ['value'],
     data: function() {
         return {

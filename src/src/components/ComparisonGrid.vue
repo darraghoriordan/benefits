@@ -1,8 +1,8 @@
 <template>
-    <div id="comparison-tables-container" style="margin-left:auto;margin-right:auto;width:80%">
+    <div style="">
         <div v-for="entry in comparisonTable">
             <h3>{{ entry.name }}</h3>
-            <table class="table" width="100%">
+            <table class="">
                 <tbody>
                     <tr v-for="field in entry.fields">
                         <td>

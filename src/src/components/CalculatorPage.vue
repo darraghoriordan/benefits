@@ -1,38 +1,31 @@
 <template>
     <div>
         <span class="biggestest">{{ salaryDifference | currency }}</span>
-        <div class="row ml-1 mr-1">
-            <div class="col-6">
-                <CalculatorForm @input="changeLeftSalaryValue"></CalculatorForm>
+        <div class="columns">
+            <div class="column">
+                <SalaryInput @input="changeLeftSalaryValue"></SalaryInput>
                 <CompanySelection @selected="selectedLeft" :company-collection="companyCollection">
                 </CompanySelection>
                 <CalculatorResults :salary-value="leftSalary" :company-data="leftCompany" @changeSalaryFuture="changeLeftSalaryFuture">
                 </CalculatorResults>
             </div>
-            <div class="col-6">
-                <CalculatorForm @input="changeRightSalaryValue"></CalculatorForm>
+            <div class="column">
+                <SalaryInput @input="changeRightSalaryValue"></SalaryInput>
                 <CompanySelection @selected="selectedRight" :company-collection="companyCollection">
                 </CompanySelection>
                 <CalculatorResults :salary-value="rightSalary" :company-data="rightCompany" @changeSalaryFuture="changeRightSalaryFuture"></CalculatorResults>
             </div>
         </div>
-        <hr>
-        <div class="row ml-1 mr-1">
-            <div class="col">
-                <ComparisonGrid :leftCompany="leftCompany" :rightCompany="rightCompany"></ComparisonGrid>
-            </div>
-        </div>
-        <div class="row ml-1 mr-1">
-            <EarningVisualisation :labels="graphLabels" :company-one-name="companyOneName" :company-two-name="companyTwoName" :company-one-dataset="companyOneDataset" :company-two-dataset="companyTwoDataset">
-            </EarningVisualisation>
 
+        <div class="">
+            <ComparisonGrid :leftCompany="leftCompany" :rightCompany="rightCompany"></ComparisonGrid>
         </div>
     </div>
 </template>
 
 <script>
 import axios from 'axios'
-import CalculatorForm from './CalculatorForm'
+import SalaryInput from './SalaryInput'
 import CompanySelection from './CompanySelection'
 import CalculatorResults from './CalculatorResults'
 import ComparisonGrid from './ComparisonGrid'
@@ -40,7 +33,7 @@ import EarningVisualisation from './EarningVisualisation'
 
 export default {
     name: 'CalculatorPage',
-    components: { CalculatorForm, CompanySelection, CalculatorResults, ComparisonGrid, EarningVisualisation },
+    components: { SalaryInput, CompanySelection, CalculatorResults, ComparisonGrid, EarningVisualisation },
     data: function() {
         return {
             companyCollection: [],

@@ -1,9 +1,9 @@
 // import Vue from 'vue'
-import CalculatorForm from '@/components/CalculatorForm'
+import SalaryInput from '@/components/SalaryInput'
 
-describe('CalculatorForm.vue', () => {
+describe('SalaryInput.vue', () => {
   it('has default data', () => {
-    const defaultData = CalculatorForm.data()
+    const defaultData = SalaryInput.data()
     console.log(defaultData)
     console.log(defaultData.salaryValue)
     console.log(expect)

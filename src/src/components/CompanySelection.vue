@@ -1,7 +1,7 @@
 <template>
-    <div class="form-group">
+    <div class="">
         <label for="companySelection">Select Company</label>
-        <select @change="changeItem(rowId, $event)" class="form-control" id="companySelection">
+        <select @change="changeItem(rowId, $event)" class="" ref="companySelection">
             <option value="">Not in list</option>
             <option :value="item" v-for="item in companyNameList">
                 {{ item }}

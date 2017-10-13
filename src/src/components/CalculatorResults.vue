@@ -1,11 +1,11 @@
 <template>
     <div>
-        Old Salary: {{ salaryValue }}
-        </br> old salary future:
+       Salary: {{ salaryValue }}
+        </br> Salary future:
         <ul>
             <li v-for="salary in futureSalaries">Year {{ salary.year }} - {{ salary.value | currency}}</li>
         </ul>
-        total earned: {{ totalEarned | currency }}
+        Total earned: {{ totalEarned | currency }}
     </div>
 </template>
 
