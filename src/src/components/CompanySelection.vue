@@ -1,12 +1,22 @@
 <template>
-    <div class="">
-        <label for="companySelection">Select Company</label>
-        <select @change="changeItem(rowId, $event)" class="" ref="companySelection">
-            <option value="">Not in list</option>
-            <option :value="item" v-for="item in companyNameList">
-                {{ item }}
-            </option>
-        </select>
+    <div class="field is-horizontal">
+        <div class="field-label is-small">
+            <label class="label">Select Company</label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+                <div class="control">
+                    <div class="select is-fullwidth">
+                        <select @change="changeItem(rowId, $event)" ref="companySelection">
+                            <option value="">Not in list</option>
+                            <option :value="item" v-for="item in companyNameList">
+                                {{ item }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 

@@ -3,6 +3,7 @@
         <span class="biggestest">{{ salaryDifference | currency }}</span>
         <div class="columns">
             <div class="column">
+                <h2 class="title is-2">You</h2>
                 <SalaryInput @input="changeLeftSalaryValue"></SalaryInput>
                 <CompanySelection @selected="selectedLeft" :company-collection="companyCollection">
                 </CompanySelection>
@@ -10,6 +11,7 @@
                 </CalculatorResults>
             </div>
             <div class="column">
+                <h2 class="title is-2">Them</h2>
                 <SalaryInput @input="changeRightSalaryValue"></SalaryInput>
                 <CompanySelection @selected="selectedRight" :company-collection="companyCollection">
                 </CompanySelection>

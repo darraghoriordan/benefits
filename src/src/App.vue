@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
     <router-view/>
   </div>
 </template>
@@ -11,7 +10,6 @@ export default {
 }
 </script>
 
-<style lang="sass" src="bulma"></style>
 <style>
  #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

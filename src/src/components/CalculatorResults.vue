@@ -1,6 +1,7 @@
 <template>
-    <div>
-       Salary: {{ salaryValue }}
+    <div class="notification is-link">
+        <button class="delete"></button>
+        Salary: {{ salaryValue }}
         </br> Salary future:
         <ul>
             <li v-for="salary in futureSalaries">Year {{ salary.year }} - {{ salary.value | currency}}</li>
