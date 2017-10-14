@@ -2,7 +2,7 @@
     <div style="">
         <div v-for="entry in comparisonTable">
             <h3>{{ entry.name }}</h3>
-            <table class="">
+            <table class="table is-bordered is-striped is-narrow">
                 <tbody>
                     <tr v-for="field in entry.fields">
                         <td>
@@ -50,7 +50,7 @@ export default {
 
             return categoryNameCollection
         },
-        calcualteValue: function(prop) {
+        calcualteDisplayValue: function(prop) {
             if (!prop) {
                 return 'Unknown'
             }
@@ -59,6 +59,9 @@ export default {
                     return 'Yes'
                 }
                 return 'No'
+            }
+            if (prop.type === 'fixedAmount') {
+                return '$' + prop.value
             }
             if (prop.type === 'percent') {
                 return prop.value + '%'
@@ -76,14 +79,14 @@ export default {
                     let currentXProp = companyObjectX[categoryName][prop]
                     let newCombinedProp = {}
                     newCombinedProp.name = currentXProp.name
-                    newCombinedProp.valueX = currentXProp.value
+                    newCombinedProp.valueX = this.calcualteDisplayValue(currentXProp)
 
                     if (companyObjectY && companyObjectY[categoryName]) {
                         let currentYProp = companyObjectY[categoryName].find(x => x.name === currentXProp.name)
                         if (!currentYProp) {
                             newCombinedProp.valueY = 'Unknown'
                         } else {
-                            newCombinedProp.valueY = currentYProp.value
+                            newCombinedProp.valueY = this.calcualteDisplayValue(currentYProp)
                         }
                     } else {
                         newCombinedProp.valueY = 'Unknown'
@@ -111,7 +114,7 @@ export default {
 
                         let newCombinedProp = {}
                         newCombinedProp.name = currentYProp.name
-                        newCombinedProp.valueY = currentYProp.value
+                        newCombinedProp.valueY = this.calcualteDisplayValue(currentYProp)
                         newCombinedProp.valueX = 'Unknown'
 
                         fieldList.push(newCombinedProp)

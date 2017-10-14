@@ -1,6 +1,8 @@
 <template>
     <div>
-        <span class="title is-2"><span class="success"> {{ salaryDifference | currency }}</span></span>
+        <span class="title is-2">
+            <span class="success"> {{ salaryDifference | currency }}</span>
+        </span>
         <div class="columns">
             <div class="column">
                 <h2 class="title is-2">You</h2>
