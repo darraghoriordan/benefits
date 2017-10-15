@@ -1,27 +1,25 @@
 <template>
     <div>
-        <span class="title is-2">
-            <span class="success"> {{ salaryDifference | currency }}</span>
-        </span>
+        <DifferenceResult :salaryDifference="salaryDifference"></DifferenceResult>
         <div class="columns">
             <div class="column">
-                <h2 class="title is-2">You</h2>
+                <h2 class="title is-2">Offer One</h2>
                 <SalaryInput @input="changeLeftSalaryValue"></SalaryInput>
                 <CompanySelection @selected="selectedLeft" :company-collection="companyCollection">
                 </CompanySelection>
-                <CalculatorResults :salary-value="leftSalary" :company-data="leftCompany" @changeSalaryFuture="changeLeftSalaryFuture">
+                <CalculatorResults :salary-value="leftSalary" numberOfYearsToCalculate="10" :company-data="leftCompany" @changeSalaryFuture="changeLeftSalaryFuture">
                 </CalculatorResults>
             </div>
             <div class="column">
-                <h2 class="title is-2">Them</h2>
+                <h2 class="title is-2">Offer Two</h2>
                 <SalaryInput @input="changeRightSalaryValue"></SalaryInput>
                 <CompanySelection @selected="selectedRight" :company-collection="companyCollection">
                 </CompanySelection>
-                <CalculatorResults :salary-value="rightSalary" :company-data="rightCompany" @changeSalaryFuture="changeRightSalaryFuture"></CalculatorResults>
+                <CalculatorResults :salary-value="rightSalary" numberOfYearsToCalculate="10" :company-data="rightCompany" @changeSalaryFuture="changeRightSalaryFuture"></CalculatorResults>
             </div>
         </div>
 
-        <div class="">
+        <div>
             <ComparisonGrid :leftCompany="leftCompany" :rightCompany="rightCompany"></ComparisonGrid>
         </div>
     </div>
@@ -34,10 +32,11 @@ import CompanySelection from './CompanySelection'
 import CalculatorResults from './CalculatorResults'
 import ComparisonGrid from './ComparisonGrid'
 import EarningVisualisation from './EarningVisualisation'
+import DifferenceResult from './DifferenceResult'
 
 export default {
     name: 'CalculatorPage',
-    components: { SalaryInput, CompanySelection, CalculatorResults, ComparisonGrid, EarningVisualisation },
+    components: { SalaryInput, CompanySelection, CalculatorResults, ComparisonGrid, EarningVisualisation, DifferenceResult },
     data: function() {
         return {
             companyCollection: [],
@@ -60,11 +59,6 @@ export default {
             let oneSum = this.companyOneDataset.reduce((a, b) => a + b.value, 0)
             let twoSum = this.companyTwoDataset.reduce((a, b) => a + b.value, 0)
             return twoSum - oneSum
-        }
-    },
-    filters: {
-        currency: function(value) {
-            return '$' + value.toFixed(2)
         }
     },
     methods: {
@@ -119,10 +113,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-.biggestest {
-    font-size: 3em;
-    color: green;
-}
-</style>
