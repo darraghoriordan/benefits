@@ -1,6 +1,6 @@
 <template>
-    <span class="title is-2">
-        <span class="biggestest">Difference: {{ salaryDifference | currency }}</span>
+    <span v-bind:class="classObject" ref="title-container">
+        {{ salaryDifference | currency }}
     </span>
 </template>
 
@@ -14,9 +14,18 @@ export default {
             required: true
         }
     },
-        filters: {
+    filters: {
         currency: function(value) {
             return '$' + value.toFixed(2)
+        }
+    },
+    computed: {
+        classObject: function() {
+            return {
+                'title is-2 biggestest': true,
+                'negative-number': this.salaryDifference < 0,
+                'positive-number': this.salaryDifference > 0
+            }
         }
     }
 }
@@ -25,7 +34,14 @@ export default {
 <style scoped>
 .biggestest {
     font-size: 3em;
+}
+
+.positive-number {
     color: green;
+}
+
+.negative-number {
+    color: red;
 }
 </style>
         
