@@ -26,27 +26,35 @@ export default {
         }
     },
     methods: {
-        calculateFixedBenefits: function(annualSalary, companyData) {
-            if (!companyData || !companyData.benefits) {
-                return {
-                    sum: 0,
-                    percentageSum: 0,
-                    fixedAmountAmount: 0,
-                    dayLeaveAmount: 0
-                }
+        calculateAnnualBenefits: function(annualSalary, companyData) {
+            let percentageSum = this.calculatePercentageBenefits(annualSalary, companyData)
+            let dayLeaveAmount = this.calculateDayLeaveBenefits(annualSalary, companyData)
+            let fixedAmountAmount = this.calculateFixedBenefits(annualSalary, companyData)
+            return {
+                sum: percentageSum + dayLeaveAmount + fixedAmountAmount,
+                percentageSum: percentageSum,
+                fixedAmountAmount: fixedAmountAmount,
+                dayLeaveAmount: dayLeaveAmount
             }
+        },
+        calculatePercentageBenefits: function(annualSalary, companyData) {
+            if (!companyData || !companyData.benefits) {
+                return 0
+            }
+
             // add percentage things
             let percentageBenefits = companyData.benefits.filter(n => n.type === 'percent')
             let percentageSum = percentageBenefits.reduce(function(previousValue, currentValue) {
                 previousValue += ((currentValue.value / 100) * annualSalary)
                 return previousValue
             }, 0)
-            // get all type: fixedAmount
-            let fixedAmountBenefits = companyData.benefits.filter(n => n.type === 'fixedAmount')
-            let fixedAmountAmount = fixedAmountBenefits.reduce(function(previousValue, currentValue) {
-                previousValue += (currentValue.value / currentValue.amortise)
-                return previousValue
-            }, 0)
+
+            return percentageSum
+        },
+        calculateDayLeaveBenefits: function(annualSalary, companyData) {
+            if (!companyData || !companyData.benefits) {
+                return 0
+            }
 
             // get all type:daysLeave
             let dayLeaveBenefits = companyData.benefits.filter(n => n.type === 'dayLeave')
@@ -54,14 +62,22 @@ export default {
                 previousValue += (((annualSalary / (5 * 52)) * currentValue.value) / currentValue.amortise)
                 return previousValue
             }, 0)
-            let sumOfParts = percentageSum + fixedAmountAmount + dayLeaveAmount
 
-            return {
-                sum: sumOfParts,
-                percentageSum: percentageSum,
-                fixedAmountAmount: fixedAmountAmount,
-                dayLeaveAmount: dayLeaveAmount
+            return dayLeaveAmount
+        },
+        calculateFixedBenefits: function(annualSalary, companyData) {
+            if (!companyData || !companyData.benefits) {
+                return 0
             }
+
+            // get all type: fixedAmount
+            let fixedAmountBenefits = companyData.benefits.filter(n => n.type === 'fixedAmount')
+            let fixedAmountAmount = fixedAmountBenefits.reduce(function(previousValue, currentValue) {
+                previousValue += (currentValue.value / currentValue.amortise)
+                return previousValue
+            }, 0)
+
+            return fixedAmountAmount
         }
     },
     computed: {
@@ -70,7 +86,7 @@ export default {
 
             let salaryFuture = []
             let standardAnnualRaisePercent = 0.03
-            let currentYearDetails = this.calculateFixedBenefits(value, this.companyData)
+            let currentYearDetails = this.calculateAnnualBenefits(value, this.companyData)
 
             salaryFuture.push({
                 year: 1,
@@ -80,7 +96,7 @@ export default {
 
             for (var i = 1; i < this.numberOfYearsToCalculate; i++) {
                 let thisYearSalary = Math.floor(value * (Math.pow((1 + (standardAnnualRaisePercent) / 1), i)))
-                let bfSum = this.calculateFixedBenefits(thisYearSalary, this.companyData)
+                let bfSum = this.calculateAnnualBenefits(thisYearSalary, this.companyData)
                 salaryFuture.push({
                     year: 1 + i,
                     value: thisYearSalary + bfSum.sum,

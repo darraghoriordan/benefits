@@ -73,9 +73,6 @@ export default {
             let fieldList = []
             if (companyObjectX) {
                 for (var prop in companyObjectX[categoryName]) {
-                    if (!companyObjectX[categoryName].hasOwnProperty(prop)) {
-                        continue
-                    }
                     let currentXProp = companyObjectX[categoryName][prop]
                     let newCombinedProp = {}
                     newCombinedProp.name = currentXProp.name
@@ -98,20 +95,15 @@ export default {
 
             if (companyObjectY) {
                 for (var yprop in companyObjectY[categoryName]) {
-                    if (!companyObjectY[categoryName].hasOwnProperty(yprop)) {
-                        // not a specific property
-                        continue
-                    }
+                     let currentYProp = companyObjectY[categoryName][yprop]
                     let currentXProp = null
                     if (companyObjectX) {
                         let currentXCategory = companyObjectX[categoryName]
                         if (currentXCategory) {
-                            currentXProp = companyObjectX[categoryName][yprop]
+                            currentXProp = companyObjectX[categoryName].find(x => x.name === currentYProp.name)
                         }
                     }
                     if (!currentXProp) {
-                        let currentYProp = companyObjectY[categoryName][yprop]
-
                         let newCombinedProp = {}
                         newCombinedProp.name = currentYProp.name
                         newCombinedProp.valueY = this.calcualteDisplayValue(currentYProp)
