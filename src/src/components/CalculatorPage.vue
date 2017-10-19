@@ -1,6 +1,6 @@
 <template>
     <div>
-        <DifferenceResult :salaryDifference="salaryDifference"></DifferenceResult>
+
         <YearsToCalculate :value="yearsToCalculate" @input="changeYearsToCalculate"></YearsToCalculate>
         <div class="columns">
             <div class="column">
@@ -8,14 +8,22 @@
                 <SalaryInput @input="changeLeftSalaryValue"></SalaryInput>
                 <CompanySelection @selected="selectedLeft" :company-collection="companyCollection">
                 </CompanySelection>
-                <CalculatorResults :salary-value="leftSalary" :numberOfYearsToCalculate="yearsToCalculate" :company-data="leftCompany" @changeSalaryFuture="changeLeftSalaryFuture">
-                </CalculatorResults>
             </div>
+
             <div class="column">
                 <h2 class="title is-2">Offer Two</h2>
                 <SalaryInput @input="changeRightSalaryValue"></SalaryInput>
                 <CompanySelection @selected="selectedRight" :company-collection="companyCollection">
                 </CompanySelection>
+            </div>
+        </div>
+        <DifferenceResult :salaryDifference="salaryDifference"></DifferenceResult>
+        <div class="columns">
+            <div class="column">
+                <CalculatorResults :salary-value="leftSalary" :numberOfYearsToCalculate="yearsToCalculate" :company-data="leftCompany" @changeSalaryFuture="changeLeftSalaryFuture">
+                </CalculatorResults>
+            </div>
+            <div class="column">
                 <CalculatorResults :salary-value="rightSalary" :numberOfYearsToCalculate="yearsToCalculate" :company-data="rightCompany" @changeSalaryFuture="changeRightSalaryFuture"></CalculatorResults>
             </div>
         </div>
