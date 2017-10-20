@@ -19,25 +19,94 @@ export default {
             totalEarned: 0
         }
     },
-    props: ['salaryValue', 'companyData', 'numberOfYearsToCalculate'],
+    props: ['salaryValue', 'companyObjectX', 'companyObjectY', 'numberOfYearsToCalculate'],
     filters: {
         currency: function(value) {
             return '$' + value.toFixed(2)
         }
     },
     methods: {
+          calcualtePropValue: function(prop, annualSalary) {
+            if (!prop) {
+                return 0
+            }
+            if (prop.type === 'dayLeave') {
+                return this.calculateDayLeaveBenefit(prop.value, prop.amortise, annualSalary)
+            }
+            if (prop.type === 'fixedAmount') {
+                return this.calculateFixedBenefit(prop.value, prop.amortise)
+            }
+            if (prop.type === 'percent') {
+                return this.calculatePercentageBenefit(prop.value, annualSalary)
+            }
+
+            return 0
+        },
+        getFields: function(companyObjectX, companyObjectY, categoryName, annualSalary) {
+            let fieldList = []
+            if (companyObjectX) {
+                for (var prop in companyObjectX[categoryName]) {
+                    let currentXProp = companyObjectX[categoryName][prop]
+                    let newCombinedProp = {}
+                    newCombinedProp.name = currentXProp.name
+                    newCombinedProp.valueX = this.calcualtePropValue(currentXProp, annualSalary)
+
+                    if (companyObjectY && companyObjectY[categoryName]) {
+                        let currentYProp = companyObjectY[categoryName].find(x => x.name === currentXProp.name)
+                        if (!currentYProp) {
+                            newCombinedProp.valueY = 0
+                        } else {
+                            newCombinedProp.valueY = this.calcualtePropValue(currentYProp, annualSalary)
+                        }
+                    } else {
+                        newCombinedProp.valueY = 0
+                    }
+
+                    fieldList.push(newCombinedProp)
+                }
+            }
+
+            if (companyObjectY) {
+                for (var yprop in companyObjectY[categoryName]) {
+                    let currentYProp = companyObjectY[categoryName][yprop]
+                    let currentXProp = null
+                    if (companyObjectX) {
+                        let currentXCategory = companyObjectX[categoryName]
+                        if (currentXCategory) {
+                            currentXProp = companyObjectX[categoryName].find(x => x.name === currentYProp.name)
+                        }
+                    }
+                    if (!currentXProp) {
+                        let newCombinedProp = {}
+                        newCombinedProp.name = currentYProp.name
+                        newCombinedProp.valueY = this.calcualtePropValue(currentYProp)
+                        newCombinedProp.valueX = 0
+
+                        fieldList.push(newCombinedProp)
+                    }
+                }
+            }
+
+            return fieldList
+        },
         calculateAnnualBenefits: function(annualSalary, companyData) {
             let percentageSum = this.calculatePercentageBenefits(annualSalary, companyData)
             let dayLeaveAmount = this.calculateDayLeaveBenefits(annualSalary, companyData)
             let fixedAmountAmount = this.calculateFixedBenefits(annualSalary, companyData)
+            let properties = this.getFields(this.companyObjectX, this.companyObjectY, 'benefits', annualSalary)
+
             return {
                 sum: percentageSum + dayLeaveAmount + fixedAmountAmount,
                 percentageSum: percentageSum,
                 fixedAmountAmount: fixedAmountAmount,
-                dayLeaveAmount: dayLeaveAmount
+                dayLeaveAmount: dayLeaveAmount,
+                propertyCollection: properties
             }
         },
         calculatePercentageBenefit: function (percentageValue, annualSalary) {
+            if (annualSalary <= 0) {
+                    return 0
+            }
             return (percentageValue / 100) * annualSalary
         },
         calculatePercentageBenefits: function(annualSalary, companyData) {
@@ -54,6 +123,9 @@ export default {
             return percentageSum
         },
         calculateDayLeaveBenefit: function(dayValue, amortiseOverYears, annualSalary) {
+            if (annualSalary <= 0) {
+                return 0
+            }
             return ((annualSalary / (5 * 52)) * dayValue) / amortiseOverYears
         },
         calculateDayLeaveBenefits: function(annualSalary, companyData) {
@@ -77,7 +149,6 @@ export default {
                 return 0
             }
             let currentInstance = this
-            // get all type: fixedAmount
             let fixedAmountBenefits = companyData.benefits.filter(n => n.type === 'fixedAmount')
             let fixedAmountAmount = fixedAmountBenefits.reduce(function(previousValue, currentValue) {
                 previousValue += currentInstance.calculateFixedBenefit(currentValue.value, currentValue.amortise)
@@ -94,10 +165,10 @@ export default {
             let salaryFuture = []
             let standardAnnualRaisePercent = 0.03
             let currentYearDetails = this.calculateAnnualBenefits(value, this.companyData)
-
             salaryFuture.push({
                 year: 1,
                 value: value + currentYearDetails.sum,
+                propertyCollection: currentYearDetails.propertyCollection,
                 breakdown: `salary (${value}) + percentageSum (${currentYearDetails.percentageSum}) + fixedAmountAmount (${currentYearDetails.fixedAmountAmount}) +  dayLeaveAmount (${currentYearDetails.dayLeaveAmount})`
             })
 
@@ -107,6 +178,7 @@ export default {
                 salaryFuture.push({
                     year: 1 + i,
                     value: thisYearSalary + bfSum.sum,
+                    propertyCollection: bfSum.propertyCollection,
                     breakdown: `salary (${thisYearSalary}) + percentageSum (${bfSum.percentageSum}) + fixedAmountAmount (${bfSum.fixedAmountAmount}) +  dayLeaveAmount (${bfSum.dayLeaveAmount})`
 
                 })

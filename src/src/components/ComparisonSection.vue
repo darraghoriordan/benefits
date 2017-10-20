@@ -100,7 +100,6 @@ export default {
             let category = {}
             category.name = this.categoryName
             category.fields = this.getFields(this.leftCompany, this.rightCompany, this.categoryName)
-
             return category
         }
     }

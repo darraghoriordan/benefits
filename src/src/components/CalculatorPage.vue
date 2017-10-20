@@ -20,12 +20,9 @@
         <DifferenceResult :salaryDifference="salaryDifference"></DifferenceResult>
         <div class="columns">
             <div class="column">
-                <CalculatorResults :salary-value="leftSalary" :numberOfYearsToCalculate="yearsToCalculate" :company-data="leftCompany" @changeSalaryFuture="changeLeftSalaryFuture">
+                <CalculatorResults :salary-value="leftSalary" :numberOfYearsToCalculate="yearsToCalculate" :company-object-x="leftCompany" :company-object-y="rightCompany" @changeSalaryFuture="changeLeftSalaryFuture">
                 </CalculatorResults>
-            </div>
-            <div class="column">
-                <CalculatorResults :salary-value="rightSalary" :numberOfYearsToCalculate="yearsToCalculate" :company-data="rightCompany" @changeSalaryFuture="changeRightSalaryFuture"></CalculatorResults>
-            </div>
+            </div>           
         </div>
 
         <div>
