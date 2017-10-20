@@ -37,43 +37,50 @@ export default {
                 dayLeaveAmount: dayLeaveAmount
             }
         },
+        calculatePercentageBenefit: function (percentageValue, annualSalary) {
+            return (percentageValue / 100) * annualSalary
+        },
         calculatePercentageBenefits: function(annualSalary, companyData) {
             if (!companyData || !companyData.benefits) {
                 return 0
             }
-
-            // add percentage things
+            let currentInstance = this
             let percentageBenefits = companyData.benefits.filter(n => n.type === 'percent')
             let percentageSum = percentageBenefits.reduce(function(previousValue, currentValue) {
-                previousValue += ((currentValue.value / 100) * annualSalary)
+                previousValue += currentInstance.calculatePercentageBenefit(currentValue.value, annualSalary)
                 return previousValue
             }, 0)
 
             return percentageSum
         },
+        calculateDayLeaveBenefit: function(dayValue, amortiseOverYears, annualSalary) {
+            return ((annualSalary / (5 * 52)) * dayValue) / amortiseOverYears
+        },
         calculateDayLeaveBenefits: function(annualSalary, companyData) {
             if (!companyData || !companyData.benefits) {
                 return 0
             }
-
-            // get all type:daysLeave
+            let currentInstance = this
             let dayLeaveBenefits = companyData.benefits.filter(n => n.type === 'dayLeave')
             let dayLeaveAmount = dayLeaveBenefits.reduce(function(previousValue, currentValue) {
-                previousValue += (((annualSalary / (5 * 52)) * currentValue.value) / currentValue.amortise)
+                previousValue += currentInstance.calculateDayLeaveBenefit(currentValue.value, currentValue.amortise, annualSalary)
                 return previousValue
             }, 0)
 
             return dayLeaveAmount
         },
+        calculateFixedBenefit: function(fixedAmountValue, amortiseOverYears) {
+            return fixedAmountValue / amortiseOverYears
+        },
         calculateFixedBenefits: function(annualSalary, companyData) {
             if (!companyData || !companyData.benefits) {
                 return 0
             }
-
+            let currentInstance = this
             // get all type: fixedAmount
             let fixedAmountBenefits = companyData.benefits.filter(n => n.type === 'fixedAmount')
             let fixedAmountAmount = fixedAmountBenefits.reduce(function(previousValue, currentValue) {
-                previousValue += (currentValue.value / currentValue.amortise)
+                previousValue += currentInstance.calculateFixedBenefit(currentValue.value, currentValue.amortise)
                 return previousValue
             }, 0)
 
