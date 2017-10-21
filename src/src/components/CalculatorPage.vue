@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <YearsToCalculate :value="yearsToCalculate" @input="changeYearsToCalculate"></YearsToCalculate>
         <div class="columns">
             <div class="column">
@@ -20,9 +19,13 @@
         <DifferenceResult :salaryDifference="1"></DifferenceResult>
         <div class="columns">
             <div class="column">
-                <CalculatorResults :annualSalaryIncrease="0.03" :salary-value="leftSalary" :numberOfYearsToCalculate="yearsToCalculate" :company-object-x="leftCompany" :company-object-y="rightCompany" @changeSalaryFuture="changeLeftSalaryFuture">
+                <CalculatorResults :annualSalaryIncrease="0.03" :salary-value="leftSalary" :numberOfYearsToCalculate="yearsToCalculate" :company-object="leftCompany" @changeAnnualSalaryCollection="changeLeftSalaryFuture">
                 </CalculatorResults>
-            </div>           
+            </div>         
+                        <div class="column">
+                <CalculatorResults :annualSalaryIncrease="0.03" :salary-value="rightSalary" :numberOfYearsToCalculate="yearsToCalculate" :company-object="rightCompany" @changeAnnualSalaryCollection="changeRightSalaryFuture">
+                </CalculatorResults>
+            </div>        
         </div>
 
         <div>
@@ -44,7 +47,7 @@ export default {
     components: { SalaryInput, CompanySelection, CalculatorResults, ComparisonGrid, DifferenceResult, YearsToCalculate },
     data: function() {
         return {
-            yearsToCalculate: 8,
+            yearsToCalculate: 4,
             companyCollection: [],
             leftCompany: {},
             rightCompany: {},
@@ -113,8 +116,7 @@ export default {
             var ctrl = this
             axios.get('/static/data.json', {
                 'encodingType': 'UTF8'
-            })
-                .then(function(response) {
+            }).then(function(response) {
                     ctrl.companyCollection = response.data.data
                 })
         }

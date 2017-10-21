@@ -16,7 +16,7 @@ export default {
             totalEarned: 0
         }
     },
-    props: ['salaryValue', 'companyObjectX', 'companyObjectY', 'numberOfYearsToCalculate', 'annualSalaryIncrease'],
+    props: ['salaryValue', 'companyObject', 'numberOfYearsToCalculate', 'annualSalaryIncrease'],
     filters: {
         currency: function(value) {
             return '$' + value.toFixed(2)
@@ -39,51 +39,21 @@ export default {
 
             return 0
         },
-        getFields: function(companyObjectX, companyObjectY, categoryName, annualSalary) {
+        calculateBenefits: function(annualSalary, companyObject) {
+            debugger
             let fieldList = []
-            if (companyObjectX) {
-                for (var prop in companyObjectX[categoryName]) {
-                    let currentXProp = companyObjectX[categoryName][prop]
+            if (companyObject) {
+                for (let i = 0; i < companyObject.benefits.length; i++) {
+                    let currentXProp = companyObject.benefits[i]
                     let newCombinedProp = {}
                     newCombinedProp.name = currentXProp.name
-                    newCombinedProp.valueX = this.calcualtePropValue(currentXProp, annualSalary)
-                    newCombinedProp.valueY = 0
-
-                    if (companyObjectY && companyObjectY[categoryName]) {
-                        let currentYProp = companyObjectY[categoryName].find(x => x.name === currentXProp.name)
-                        if (currentYProp) {
-                            newCombinedProp.valueY = this.calcualtePropValue(currentYProp, annualSalary)
-                        }
-                    }
+                    newCombinedProp.value = this.calcualtePropValue(currentXProp, annualSalary)
 
                     fieldList.push(newCombinedProp)
                 }
             }
 
-            if (companyObjectY) {
-                for (var yprop in companyObjectY[categoryName]) {
-                    let currentYProp = companyObjectY[categoryName][yprop]
-                    let currentXProp = null
-                    if (companyObjectX && companyObjectX[categoryName]) {
-                        currentXProp = companyObjectX[categoryName].find(x => x.name === currentYProp.name)
-                    }
-                    if (!currentXProp) {
-                        let newCombinedProp = {}
-                        newCombinedProp.name = currentYProp.name
-                        newCombinedProp.valueY = this.calcualtePropValue(currentYProp, annualSalary)
-                        newCombinedProp.valueX = 0
-
-                        fieldList.push(newCombinedProp)
-                    }
-                }
-            }
-
             return fieldList
-        },
-        calculateAnnualBenefits: function(annualSalary, companyData) {
-            return {
-                propertyCollection: this.getFields(this.companyObjectX, this.companyObjectY, 'benefits', annualSalary)
-            }
         },
         calculatePercentageBenefit: function (percentageValue, annualSalary) {
             if (annualSalary <= 0) {
@@ -99,38 +69,46 @@ export default {
         },
         calculateFixedBenefit: function(fixedAmountValue, amortiseOverYears) {
             return fixedAmountValue / amortiseOverYears
-        }
-    },
-    computed: {
-        futureSalaries: function() {
-            let value = this.salaryValue
-
-            let salaryFuture = []
-            let standardAnnualRaisePercent = this.annualSalaryIncrease
-            let currentYearDetails = this.calculateAnnualBenefits(value, this.companyData)
-            salaryFuture.push({
-                year: 1,
-                value: value,
-                propertyCollection: currentYearDetails.propertyCollection
-            })
-
-            for (var i = 1; i < this.numberOfYearsToCalculate; i++) {
-                let thisYearSalary = Math.floor(value * (Math.pow((1 + (standardAnnualRaisePercent) / 1), i)))
-                let bfSum = this.calculateAnnualBenefits(thisYearSalary, this.companyData)
-                salaryFuture.push({
-                    year: 1 + i,
-                    value: thisYearSalary,
-                    propertyCollection: bfSum.propertyCollection
-                })
-            }
-
-            this.totalEarned = salaryFuture.reduce(
+        },
+          sumBenefits: function(propCollection) {
+            return propCollection.reduce(
                 function(accumulator, currentValue) {
                     return accumulator + currentValue.value
                 }, 0
             )
-            this.$emit('changeSalaryFuture', salaryFuture)
-            return salaryFuture
+        }
+    },
+    computed: {
+        futureSalaries: function() {
+            let newSalaryValue = this.salaryValue
+            let selectedCompany = this.companyObject
+            let standardAnnualRaisePercent = this.annualSalaryIncrease
+            let annualSalaryCollection = []
+
+            let firstYearBenefitCollection = this.calculateBenefits(newSalaryValue, selectedCompany)
+            annualSalaryCollection.push({
+                year: 1,
+                salary: newSalaryValue + this.sumBenefits(firstYearBenefitCollection),
+                benefitCollection: firstYearBenefitCollection
+            })
+
+            for (var i = 1; i < this.numberOfYearsToCalculate; i++) {
+                let thisYearSalary = Math.floor(newSalaryValue * (Math.pow((1 + (standardAnnualRaisePercent) / 1), i)))
+                let benefitCollection = this.calculateBenefits(thisYearSalary, selectedCompany)
+                annualSalaryCollection.push({
+                    year: 1 + i,
+                    salary: thisYearSalary + this.sumBenefits(benefitCollection),
+                    benefitCollection: benefitCollection
+                })
+            }
+
+            this.totalEarned = annualSalaryCollection.reduce(
+                function(accumulator, currentValue) {
+                    return accumulator + currentValue.salary
+                }, 0
+            )
+            this.$emit('changeAnnualSalaryCollection', annualSalaryCollection)
+            return annualSalaryCollection
         }
     }
 }
