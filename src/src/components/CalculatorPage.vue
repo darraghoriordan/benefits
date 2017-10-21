@@ -5,22 +5,22 @@
         <div class="columns">
             <div class="column">
                 <h2 class="title is-2">Offer One</h2>
-                <SalaryInput @input="changeLeftSalaryValue"></SalaryInput>
+                <SalaryInput @input="changeLeftSalaryValue" :value="0"></SalaryInput>
                 <CompanySelection @selected="selectedLeft" :company-collection="companyCollection">
                 </CompanySelection>
             </div>
 
             <div class="column">
                 <h2 class="title is-2">Offer Two</h2>
-                <SalaryInput @input="changeRightSalaryValue"></SalaryInput>
+                <SalaryInput @input="changeRightSalaryValue" :value="0"></SalaryInput>
                 <CompanySelection @selected="selectedRight" :company-collection="companyCollection">
                 </CompanySelection>
             </div>
         </div>
-        <DifferenceResult :salaryDifference="salaryDifference"></DifferenceResult>
+        <DifferenceResult :salaryDifference="1"></DifferenceResult>
         <div class="columns">
             <div class="column">
-                <CalculatorResults :salary-value="leftSalary" :numberOfYearsToCalculate="yearsToCalculate" :company-object-x="leftCompany" :company-object-y="rightCompany" @changeSalaryFuture="changeLeftSalaryFuture">
+                <CalculatorResults :annualSalaryIncrease="0.03" :salary-value="leftSalary" :numberOfYearsToCalculate="yearsToCalculate" :company-object-x="leftCompany" :company-object-y="rightCompany" @changeSalaryFuture="changeLeftSalaryFuture">
                 </CalculatorResults>
             </div>           
         </div>
@@ -37,12 +37,11 @@ import SalaryInput from './SalaryInput'
 import CompanySelection from './CompanySelection'
 import CalculatorResults from './CalculatorResults'
 import ComparisonGrid from './ComparisonGrid'
-import EarningVisualisation from './EarningVisualisation'
 import DifferenceResult from './DifferenceResult'
 import YearsToCalculate from './YearsToCalculate'
 export default {
     name: 'CalculatorPage',
-    components: { SalaryInput, CompanySelection, CalculatorResults, ComparisonGrid, EarningVisualisation, DifferenceResult, YearsToCalculate },
+    components: { SalaryInput, CompanySelection, CalculatorResults, ComparisonGrid, DifferenceResult, YearsToCalculate },
     data: function() {
         return {
             yearsToCalculate: 8,
@@ -51,7 +50,6 @@ export default {
             rightCompany: {},
             leftSalary: 0,
             rightSalary: 0,
-            graphLabels: ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5', 'Year 6', 'Year 7', 'Year 8', 'Year 9', 'Year 10'],
             companyOneDataset: [],
             companyTwoDataset: [],
             companyOneName: '',

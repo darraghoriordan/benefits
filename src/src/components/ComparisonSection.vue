@@ -1,4 +1,4 @@
-r<template>
+<template>
     <div>
         <h3>{{ comparisonTable.name }}</h3>
         <table class="table is-bordered is-striped is-narrow">
@@ -50,18 +50,13 @@ export default {
                     let newCombinedProp = {}
                     newCombinedProp.name = currentXProp.name
                     newCombinedProp.valueX = this.calcualteDisplayValue(currentXProp)
-
+                    newCombinedProp.valueY = 'Unknown'
                     if (companyObjectY && companyObjectY[categoryName]) {
                         let currentYProp = companyObjectY[categoryName].find(x => x.name === currentXProp.name)
-                        if (!currentYProp) {
-                            newCombinedProp.valueY = 'Unknown'
-                        } else {
+                        if (currentYProp) {
                             newCombinedProp.valueY = this.calcualteDisplayValue(currentYProp)
                         }
-                    } else {
-                        newCombinedProp.valueY = 'Unknown'
                     }
-
                     fieldList.push(newCombinedProp)
                 }
             }

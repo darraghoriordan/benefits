@@ -21,7 +21,7 @@
       "benefits": [{
         "name": "Kiwisaver",
         "type": "percent",
-        "amortise": "1",
+        "amortise": 1,
         "value": 3
       }],
       "technology": [{
@@ -68,28 +68,28 @@
       "benefits": [{
         "name": "Kiwisaver",
         "type": "percent",
-        "amortise": "1",
+        "amortise": 1,
         "value": 4
       }, {
         "name": "Volunteer Day(s)",
         "type": "dayLeave",
-        "amortise": "1",
-        "value": "1"
+        "amortise": 1,
+        "value": 1
       }, {
         "name": "Energy Services Discount",
         "type": "fixedAmount",
-        "amortise": "1",
-        "value": "200"
+        "amortise": 1,
+        "value": 200
       }, {
         "name": "Health Insurance",
         "type": "fixedAmount",
-        "amortise": "1",
-        "value": "1000"
+        "amortise": 1,
+        "value": 1000
       }, {
         "name": "Insurance Cover",
         "type": "fixedAmount",
-        "amortise": "1",
-        "value": "550"
+        "amortise": 1,
+        "value": 550
       }]
     }
   ]
