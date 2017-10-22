@@ -29,7 +29,6 @@ export default {
             required: true
         }
     },
-
     data: function() {
         return {
             selected: 'selected',

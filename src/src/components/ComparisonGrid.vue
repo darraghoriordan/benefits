@@ -15,8 +15,8 @@ export default {
   computed: {
     getCategoryNameCollection: function() {
       let categoryNameCollection = []
-        let companyX = this.leftCompany
-        let companyY = this.rightCompany
+      let companyX = this.leftCompany
+      let companyY = this.rightCompany
       for (var key in companyX) {
         if (!companyX.hasOwnProperty(key)) {
           continue

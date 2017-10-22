@@ -16,7 +16,7 @@
                 </CompanySelection>
             </div>
         </div>
-        <DifferenceResult :salaryDifference="1"></DifferenceResult>
+        <DifferenceResult :company-one-dataset="companyOneDataset" :company-two-dataset="companyTwoDataset"></DifferenceResult>
         <div class="columns">
             <div class="column">
                 <CalculatorResults :annualSalaryIncrease="0.03" :salary-value="leftSalary" :numberOfYearsToCalculate="yearsToCalculate" :company-object="leftCompany" @changeAnnualSalaryCollection="changeLeftSalaryFuture">
@@ -61,13 +61,6 @@ export default {
     },
     created: function() {
         this.loadData()
-    },
-    computed: {
-        salaryDifference: function() {
-            let oneSum = this.companyOneDataset.reduce((a, b) => a + b.value, 0)
-            let twoSum = this.companyTwoDataset.reduce((a, b) => a + b.value, 0)
-            return twoSum - oneSum
-        }
     },
     methods: {
         changeYearsToCalculate: function(value) {

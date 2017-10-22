@@ -1,21 +1,15 @@
 <template>
     <div class="notification is-link">
         <button class="delete"></button>
-           <!-- <div v-for="entry in getCategoryNameCollection">
+            <div v-for="entry in annualSalaryCollection">
 
-               </div> -->
+            </div>
     </div>
 </template>
 
 <script>
 export default {
     name: 'CalculatorResults',
-    data: function() {
-        return {
-            salaryFuture: [],
-            totalEarned: 0
-        }
-    },
     props: ['salaryValue', 'companyObject', 'numberOfYearsToCalculate', 'annualSalaryIncrease'],
     filters: {
         currency: function(value) {
@@ -40,9 +34,10 @@ export default {
             return 0
         },
         calculateBenefits: function(annualSalary, companyObject) {
-            debugger
             let fieldList = []
-            if (companyObject) {
+            if (!companyObject || !companyObject.benefits) {
+                return fieldList
+            }
                 for (let i = 0; i < companyObject.benefits.length; i++) {
                     let currentXProp = companyObject.benefits[i]
                     let newCombinedProp = {}
@@ -51,8 +46,6 @@ export default {
 
                     fieldList.push(newCombinedProp)
                 }
-            }
-
             return fieldList
         },
         calculatePercentageBenefit: function (percentageValue, annualSalary) {
@@ -79,7 +72,7 @@ export default {
         }
     },
     computed: {
-        futureSalaries: function() {
+        annualSalaryCollection: function() {
             let newSalaryValue = this.salaryValue
             let selectedCompany = this.companyObject
             let standardAnnualRaisePercent = this.annualSalaryIncrease
@@ -102,11 +95,6 @@ export default {
                 })
             }
 
-            this.totalEarned = annualSalaryCollection.reduce(
-                function(accumulator, currentValue) {
-                    return accumulator + currentValue.salary
-                }, 0
-            )
             this.$emit('changeAnnualSalaryCollection', annualSalaryCollection)
             return annualSalaryCollection
         }
