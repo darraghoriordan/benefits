@@ -17,19 +17,8 @@
             </div>
         </div>
         <DifferenceResult :company-one-dataset="companyOneDataset" :company-two-dataset="companyTwoDataset"></DifferenceResult>
-        <div class="columns">
-            <div class="column">
-                <CalculatorResults :annualSalaryIncrease="0.03" :salary-value="leftSalary" :numberOfYearsToCalculate="yearsToCalculate" :company-object="leftCompany" @changeAnnualSalaryCollection="changeLeftSalaryFuture">
-                </CalculatorResults>
-            </div>         
-                        <div class="column">
-                <CalculatorResults :annualSalaryIncrease="0.03" :salary-value="rightSalary" :numberOfYearsToCalculate="yearsToCalculate" :company-object="rightCompany" @changeAnnualSalaryCollection="changeRightSalaryFuture">
-                </CalculatorResults>
-            </div>        
-        </div>
-
         <div>
-            <ComparisonGrid :leftCompany="leftCompany" :rightCompany="rightCompany"></ComparisonGrid>
+            <ComparisonGrid :leftCompany="companyOne" :rightCompany="companyTwo"></ComparisonGrid>
         </div>
     </div>
 </template>
@@ -38,72 +27,134 @@
 import axios from 'axios'
 import SalaryInput from './SalaryInput'
 import CompanySelection from './CompanySelection'
-import CalculatorResults from './CalculatorResults'
 import ComparisonGrid from './ComparisonGrid'
 import DifferenceResult from './DifferenceResult'
 import YearsToCalculate from './YearsToCalculate'
 export default {
     name: 'CalculatorPage',
-    components: { SalaryInput, CompanySelection, CalculatorResults, ComparisonGrid, DifferenceResult, YearsToCalculate },
+    components: { SalaryInput, CompanySelection, ComparisonGrid, DifferenceResult, YearsToCalculate },
     data: function() {
         return {
             yearsToCalculate: 4,
             companyCollection: [],
-            leftCompany: {},
-            rightCompany: {},
-            leftSalary: 0,
-            rightSalary: 0,
-            companyOneDataset: [],
-            companyTwoDataset: [],
-            companyOneName: '',
-            companyTwoName: ''
+            companyOne: {},
+            companyTwo: {},
+            salaryOne: 0,
+            salaryTwo: 0
+        }
+    },
+    computed: {
+        companyOneDataset: function() {
+            return this.calculateAnnualSalaryCollection(this.salaryOne, this.companyOne, 0.3, this.yearsToCalculate)
+        },
+         companyTwoDataset: function() {
+            return this.calculateAnnualSalaryCollection(this.salaryTwo, this.companyTwo, 0.3, this.yearsToCalculate)
         }
     },
     created: function() {
         this.loadData()
     },
     methods: {
+        calculateAnnualSalaryCollection: function(salaryValue, companyObject, annualSalaryIncrease, numberOfYearsToCalculate) {
+            let annualSalaryCollection = []
+
+            let firstYearBenefitCollection = this.calculateBenefits(salaryValue, companyObject)
+            annualSalaryCollection.push({
+                year: 1,
+                salary: salaryValue + this.sumBenefits(firstYearBenefitCollection),
+                benefitCollection: firstYearBenefitCollection
+            })
+
+            for (var i = 1; i < numberOfYearsToCalculate; i++) {
+                let thisYearSalary = Math.floor(salaryValue * (Math.pow((1 + (annualSalaryIncrease) / 1), i)))
+                let benefitCollection = this.calculateBenefits(thisYearSalary, companyObject)
+                annualSalaryCollection.push({
+                    year: 1 + i,
+                    salary: thisYearSalary + this.sumBenefits(benefitCollection),
+                    benefitCollection: benefitCollection
+                })
+            }
+
+            return annualSalaryCollection
+        },
+         calcualtePropValue: function(prop, annualSalary) {
+            if (!prop) {
+                return 0
+            }
+            if (prop.type === 'dayLeave') {
+                return this.calculateDayLeaveBenefit(prop.value, prop.amortise, annualSalary)
+            }
+            if (prop.type === 'fixedAmount') {
+                return this.calculateFixedBenefit(prop.value, prop.amortise)
+            }
+            if (prop.type === 'percent') {
+                return this.calculatePercentageBenefit(prop.value, annualSalary)
+            }
+
+            return 0
+        },
+        calculateBenefits: function(annualSalary, companyObject) {
+            let fieldList = []
+            if (!companyObject || !companyObject.benefits) {
+                return fieldList
+            }
+                for (let i = 0; i < companyObject.benefits.length; i++) {
+                    let currentXProp = companyObject.benefits[i]
+                    let newCombinedProp = {}
+                    newCombinedProp.name = currentXProp.name
+                    newCombinedProp.value = this.calcualtePropValue(currentXProp, annualSalary)
+
+                    fieldList.push(newCombinedProp)
+                }
+            return fieldList
+        },
+        calculatePercentageBenefit: function (percentageValue, annualSalary) {
+            if (annualSalary <= 0) {
+                    return 0
+            }
+            return (percentageValue / 100) * annualSalary
+        },
+        calculateDayLeaveBenefit: function(dayValue, amortiseOverYears, annualSalary) {
+            if (annualSalary <= 0) {
+                return 0
+            }
+            return ((annualSalary / (5 * 52)) * dayValue) / amortiseOverYears
+        },
+        calculateFixedBenefit: function(fixedAmountValue, amortiseOverYears) {
+            return fixedAmountValue / amortiseOverYears
+        },
+          sumBenefits: function(propCollection) {
+            return propCollection.reduce(
+                function(accumulator, currentValue) {
+                    return accumulator + currentValue.value
+                }, 0
+            )
+        },
         changeYearsToCalculate: function(value) {
             this.yearsToCalculate = value
         },
-        changeLeftSalaryFuture: function(value) {
-            this.companyOneDataset = value
-        },
-        changeRightSalaryFuture: function(value) {
-            this.companyTwoDataset = value
-        },
         changeLeftSalaryValue: function(value) {
-            this.leftSalary = value
+            this.salaryOne = value
         },
         changeRightSalaryValue: function(value) {
-            this.rightSalary = value
+            this.salaryTwo = value
         },
         selectedLeft: function(value) {
             let localValue = value
-            this.leftCompany = this.companyCollection.find(
+            this.companyOne = this.companyCollection.find(
                 function(x) {
                     let result = x.company.find(n => n.name === 'Company Name').value === localValue
                     return result
                 })
-            let foundName = ''
-            if (this.leftCompany) {
-                foundName = this.leftCompany.company.find(n => n.name === 'Company Name').value
-            }
-            this.companyOneName = foundName
         },
         selectedRight: function(value) {
             let localValue = value
-            this.rightCompany = this.companyCollection.find(
+            this.companyTwo = this.companyCollection.find(
                 function(x) {
                     let result = x.company.find(n => n.name === 'Company Name').value === localValue
                     return result
                 }
             )
-            let foundName = ''
-            if (this.rightCompany) {
-                foundName = this.rightCompany.company.find(n => n.name === 'Company Name').value
-            }
-            this.companyTwoName = foundName
         },
         loadData: function() {
             var ctrl = this
