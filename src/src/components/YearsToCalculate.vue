@@ -15,36 +15,34 @@
 
 <script>
 export default {
-    name: 'YearsToCalculate',
-    props: {
-        value: {
-            type: Number,
-            default: 5
-        }
-    },
-    data: function() {
-        return {
-            yearsToCalculate: 0
-        }
-    },
-    methods: {
-        updateValue: function(value) {
-            var formattedValue = value
-                .trim()
-                .slice(
-                0,
-                value.indexOf('.') === -1
-                    ? value.length
-                    : value.indexOf('.') + 3
-                )
-            // If the value was not already normalized,
-            // manually override it to conform
-            if (formattedValue !== value) {
-                this.$refs.input.value = formattedValue
-            }
-            // Emit the number value through the input event
-            this.$emit('input', Number(formattedValue))
-        }
+  name: 'YearsToCalculate',
+  props: {
+    value: {
+      type: Number,
+      default: 5
     }
+  },
+  data: function() {
+    return {
+      yearsToCalculate: 0
+    }
+  },
+  methods: {
+    updateValue: function(value) {
+      var formattedValue = value
+        .trim()
+        .slice(
+          0,
+          value.indexOf('.') === -1 ? value.length : value.indexOf('.') + 3
+        )
+      // If the value was not already normalized,
+      // manually override it to conform
+      if (formattedValue !== value) {
+        this.$refs.input.value = formattedValue
+      }
+      // Emit the number value through the input event
+      this.$emit('input', Number(formattedValue))
+    }
+  }
 }
 </script>

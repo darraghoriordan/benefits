@@ -22,32 +22,32 @@
 
 <script>
 export default {
-    name: 'CompanySelection',
-    props: {
-        companyCollection: {
-            type: Array,
-            required: true
-        }
-    },
-    data: function() {
-        return {
-            selected: 'selected',
-            rowId: 10
-        }
-    },
-    computed: {
-        companyNameList: function() {
-            let list = this.companyCollection.map(
-                x => x.company.find(n => n.name === 'Company Name').value
-            )
-            return list
-        }
-    },
-    methods: {
-        changeItem: function(rowId, event) {
-            this.selected = `${rowId}, ${event.target.value}`
-            this.$emit('selected', event.target.value)
-        }
+  name: 'CompanySelection',
+  props: {
+    companyCollection: {
+      type: Array,
+      required: true
     }
+  },
+  data: function() {
+    return {
+      selected: 'selected',
+      rowId: 10
+    }
+  },
+  computed: {
+    companyNameList: function() {
+      let list = this.companyCollection.map(
+        x => x.company.find(n => n.name === 'Company Name').value
+      )
+      return list
+    }
+  },
+  methods: {
+    changeItem: function(rowId, event) {
+      this.selected = `${rowId}, ${event.target.value}`
+      this.$emit('selected', event.target.value)
+    }
+  }
 }
 </script>

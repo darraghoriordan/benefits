@@ -31,139 +31,178 @@ import ComparisonGrid from './ComparisonGrid'
 import DifferenceResult from './DifferenceResult'
 import YearsToCalculate from './YearsToCalculate'
 export default {
-    name: 'CalculatorPage',
-    components: { SalaryInput, CompanySelection, ComparisonGrid, DifferenceResult, YearsToCalculate },
-    data: function() {
-        return {
-            yearsToCalculate: 4,
-            companyCollection: [],
-            companyOne: {},
-            companyTwo: {},
-            salaryOne: 0,
-            salaryTwo: 0
-        }
-    },
-    computed: {
-        companyOneDataset: function() {
-            return this.calculateAnnualSalaryCollection(this.salaryOne, this.companyOne, 0.3, this.yearsToCalculate)
-        },
-         companyTwoDataset: function() {
-            return this.calculateAnnualSalaryCollection(this.salaryTwo, this.companyTwo, 0.3, this.yearsToCalculate)
-        }
-    },
-    created: function() {
-        this.loadData()
-    },
-    methods: {
-        calculateAnnualSalaryCollection: function(salaryValue, companyObject, annualSalaryIncrease, numberOfYearsToCalculate) {
-            let annualSalaryCollection = []
-
-            let firstYearBenefitCollection = this.calculateBenefits(salaryValue, companyObject)
-            annualSalaryCollection.push({
-                year: 1,
-                salary: salaryValue + this.sumBenefits(firstYearBenefitCollection),
-                benefitCollection: firstYearBenefitCollection
-            })
-
-            for (var i = 1; i < numberOfYearsToCalculate; i++) {
-                let thisYearSalary = Math.floor(salaryValue * (Math.pow((1 + (annualSalaryIncrease) / 1), i)))
-                let benefitCollection = this.calculateBenefits(thisYearSalary, companyObject)
-                annualSalaryCollection.push({
-                    year: 1 + i,
-                    salary: thisYearSalary + this.sumBenefits(benefitCollection),
-                    benefitCollection: benefitCollection
-                })
-            }
-
-            return annualSalaryCollection
-        },
-         calcualtePropValue: function(prop, annualSalary) {
-            if (!prop) {
-                return 0
-            }
-            if (prop.type === 'dayLeave') {
-                return this.calculateDayLeaveBenefit(prop.value, prop.amortise, annualSalary)
-            }
-            if (prop.type === 'fixedAmount') {
-                return this.calculateFixedBenefit(prop.value, prop.amortise)
-            }
-            if (prop.type === 'percent') {
-                return this.calculatePercentageBenefit(prop.value, annualSalary)
-            }
-
-            return 0
-        },
-        calculateBenefits: function(annualSalary, companyObject) {
-            let fieldList = []
-            if (!companyObject || !companyObject.benefits) {
-                return fieldList
-            }
-                for (let i = 0; i < companyObject.benefits.length; i++) {
-                    let currentXProp = companyObject.benefits[i]
-                    let newCombinedProp = {}
-                    newCombinedProp.name = currentXProp.name
-                    newCombinedProp.value = this.calcualtePropValue(currentXProp, annualSalary)
-
-                    fieldList.push(newCombinedProp)
-                }
-            return fieldList
-        },
-        calculatePercentageBenefit: function (percentageValue, annualSalary) {
-            if (annualSalary <= 0) {
-                    return 0
-            }
-            return (percentageValue / 100) * annualSalary
-        },
-        calculateDayLeaveBenefit: function(dayValue, amortiseOverYears, annualSalary) {
-            if (annualSalary <= 0) {
-                return 0
-            }
-            return ((annualSalary / (5 * 52)) * dayValue) / amortiseOverYears
-        },
-        calculateFixedBenefit: function(fixedAmountValue, amortiseOverYears) {
-            return fixedAmountValue / amortiseOverYears
-        },
-          sumBenefits: function(propCollection) {
-            return propCollection.reduce(
-                function(accumulator, currentValue) {
-                    return accumulator + currentValue.value
-                }, 0
-            )
-        },
-        changeYearsToCalculate: function(value) {
-            this.yearsToCalculate = value
-        },
-        changeLeftSalaryValue: function(value) {
-            this.salaryOne = value
-        },
-        changeRightSalaryValue: function(value) {
-            this.salaryTwo = value
-        },
-        selectedLeft: function(value) {
-            let localValue = value
-            this.companyOne = this.companyCollection.find(
-                function(x) {
-                    let result = x.company.find(n => n.name === 'Company Name').value === localValue
-                    return result
-                })
-        },
-        selectedRight: function(value) {
-            let localValue = value
-            this.companyTwo = this.companyCollection.find(
-                function(x) {
-                    let result = x.company.find(n => n.name === 'Company Name').value === localValue
-                    return result
-                }
-            )
-        },
-        loadData: function() {
-            var ctrl = this
-            axios.get('/static/data.json', {
-                'encodingType': 'UTF8'
-            }).then(function(response) {
-                    ctrl.companyCollection = response.data.data
-                })
-        }
+  name: 'CalculatorPage',
+  components: {
+    SalaryInput,
+    CompanySelection,
+    ComparisonGrid,
+    DifferenceResult,
+    YearsToCalculate
+  },
+  data: function() {
+    return {
+      yearsToCalculate: 4,
+      companyCollection: [],
+      companyOne: {},
+      companyTwo: {},
+      salaryOne: 0,
+      salaryTwo: 0
     }
+  },
+  computed: {
+    companyOneDataset: function() {
+      return this.calculateAnnualSalaryCollection(
+        this.salaryOne,
+        this.companyOne,
+        0.3,
+        this.yearsToCalculate
+      )
+    },
+    companyTwoDataset: function() {
+      return this.calculateAnnualSalaryCollection(
+        this.salaryTwo,
+        this.companyTwo,
+        0.3,
+        this.yearsToCalculate
+      )
+    }
+  },
+  created: function() {
+    this.loadData()
+  },
+  methods: {
+    calculateAnnualSalaryCollection: function(
+      salaryValue,
+      companyObject,
+      annualSalaryIncrease,
+      numberOfYearsToCalculate
+    ) {
+      let annualSalaryCollection = []
+
+      let firstYearBenefitCollection = this.calculateBenefits(
+        salaryValue,
+        companyObject
+      )
+      annualSalaryCollection.push({
+        year: 1,
+        salary: salaryValue + this.sumBenefits(firstYearBenefitCollection),
+        benefitCollection: firstYearBenefitCollection
+      })
+
+      for (var i = 1; i < numberOfYearsToCalculate; i++) {
+        let thisYearSalary = Math.floor(
+          salaryValue * Math.pow(1 + annualSalaryIncrease / 1, i)
+        )
+        let benefitCollection = this.calculateBenefits(
+          thisYearSalary,
+          companyObject
+        )
+        annualSalaryCollection.push({
+          year: 1 + i,
+          salary: thisYearSalary + this.sumBenefits(benefitCollection),
+          benefitCollection: benefitCollection
+        })
+      }
+
+      return annualSalaryCollection
+    },
+    calcualtePropValue: function(prop, annualSalary) {
+      if (!prop) {
+        return 0
+      }
+      if (prop.type === 'dayLeave') {
+        return this.calculateDayLeaveBenefit(
+          prop.value,
+          prop.amortise,
+          annualSalary
+        )
+      }
+      if (prop.type === 'fixedAmount') {
+        return this.calculateFixedBenefit(prop.value, prop.amortise)
+      }
+      if (prop.type === 'percent') {
+        return this.calculatePercentageBenefit(prop.value, annualSalary)
+      }
+
+      return 0
+    },
+    calculateBenefits: function(annualSalary, companyObject) {
+      let fieldList = []
+      if (!companyObject || !companyObject.benefits) {
+        return fieldList
+      }
+      for (let i = 0; i < companyObject.benefits.length; i++) {
+        let currentXProp = companyObject.benefits[i]
+        let newCombinedProp = {}
+        newCombinedProp.name = currentXProp.name
+        newCombinedProp.value = this.calcualtePropValue(
+          currentXProp,
+          annualSalary
+        )
+
+        fieldList.push(newCombinedProp)
+      }
+      return fieldList
+    },
+    calculatePercentageBenefit: function(percentageValue, annualSalary) {
+      if (annualSalary <= 0) {
+        return 0
+      }
+      return percentageValue / 100 * annualSalary
+    },
+    calculateDayLeaveBenefit: function(
+      dayValue,
+      amortiseOverYears,
+      annualSalary
+    ) {
+      if (annualSalary <= 0) {
+        return 0
+      }
+      return annualSalary / (5 * 52) * dayValue / amortiseOverYears
+    },
+    calculateFixedBenefit: function(fixedAmountValue, amortiseOverYears) {
+      return fixedAmountValue / amortiseOverYears
+    },
+    sumBenefits: function(propCollection) {
+      return propCollection.reduce(function(accumulator, currentValue) {
+        return accumulator + currentValue.value
+      }, 0)
+    },
+    changeYearsToCalculate: function(value) {
+      this.yearsToCalculate = value
+    },
+    changeLeftSalaryValue: function(value) {
+      this.salaryOne = value
+    },
+    changeRightSalaryValue: function(value) {
+      this.salaryTwo = value
+    },
+    selectedLeft: function(value) {
+      let localValue = value
+      this.companyOne = this.companyCollection.find(function(x) {
+        let result =
+          x.company.find(n => n.name === 'Company Name').value === localValue
+        return result
+      })
+    },
+    selectedRight: function(value) {
+      let localValue = value
+      this.companyTwo = this.companyCollection.find(function(x) {
+        let result =
+          x.company.find(n => n.name === 'Company Name').value === localValue
+        return result
+      })
+    },
+    loadData: function() {
+      var ctrl = this
+      axios
+        .get('/static/data.json', {
+          encodingType: 'UTF8'
+        })
+        .then(function(response) {
+          ctrl.companyCollection = response.data.data
+        })
+    }
+  }
 }
 </script>
