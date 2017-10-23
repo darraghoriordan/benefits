@@ -79,31 +79,30 @@ export default {
     ) {
       let annualSalaryCollection = []
 
-      let firstYearBenefitCollection = this.calculateBenefits(
+      let firstYearBenefitsCollection = this.calculateBenefits(
         salaryValue,
         companyObject
       )
       annualSalaryCollection.push({
         year: 1,
-        salary: salaryValue + this.sumBenefits(firstYearBenefitCollection),
-        benefitCollection: firstYearBenefitCollection
+        salary: salaryValue,
+        benefitsCollection: firstYearBenefitsCollection
       })
 
       for (var i = 1; i < numberOfYearsToCalculate; i++) {
         let thisYearSalary = Math.floor(
           salaryValue * Math.pow(1 + annualSalaryIncrease / 1, i)
         )
-        let benefitCollection = this.calculateBenefits(
+        let benefitsCollection = this.calculateBenefits(
           thisYearSalary,
           companyObject
         )
         annualSalaryCollection.push({
           year: 1 + i,
-          salary: thisYearSalary + this.sumBenefits(benefitCollection),
-          benefitCollection: benefitCollection
+          salary: thisYearSalary,
+          benefitsCollection: benefitsCollection
         })
       }
-
       return annualSalaryCollection
     },
     calcualtePropValue: function(prop, annualSalary) {
@@ -139,7 +138,6 @@ export default {
           currentXProp,
           annualSalary
         )
-
         fieldList.push(newCombinedProp)
       }
       return fieldList
@@ -162,11 +160,6 @@ export default {
     },
     calculateFixedBenefit: function(fixedAmountValue, amortiseOverYears) {
       return fixedAmountValue / amortiseOverYears
-    },
-    sumBenefits: function(propCollection) {
-      return propCollection.reduce(function(accumulator, currentValue) {
-        return accumulator + currentValue.value
-      }, 0)
     },
     changeYearsToCalculate: function(value) {
       this.yearsToCalculate = value
