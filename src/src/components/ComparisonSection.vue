@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h3>{{ comparisonTable.name }}</h3>
+        <h3 class="title comparison-section__section-title">{{ comparisonTable.name }}</h3>
         <table class="table is-bordered is-striped is-narrow">
             <tbody>
                 <tr v-for="field in comparisonTable.fields">
@@ -108,3 +108,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.comparison-section__section-title {
+  text-transform: capitalize;
+}
+</style>

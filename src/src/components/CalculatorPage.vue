@@ -1,7 +1,6 @@
 <template>
     <div>
-        <YearsToCalculate :value="yearsToCalculate" @input="changeYearsToCalculate"></YearsToCalculate>
-        <div class="columns">
+      <div class="columns">
             <div class="column">
                 <h2 class="title is-2">Offer One</h2>
                 <SalaryInput @input="changeLeftSalaryValue" :value="0"></SalaryInput>
@@ -16,6 +15,7 @@
                 </CompanySelection>
             </div>
         </div>
+        <YearsToCalculate :value="yearsToCalculate" @input="changeYearsToCalculate"></YearsToCalculate>
         <DifferenceResult :company-one-dataset="companyOneDataset" :company-two-dataset="companyTwoDataset"></DifferenceResult>
         <div>
             <ComparisonGrid :leftCompany="companyOne" :rightCompany="companyTwo"></ComparisonGrid>
@@ -30,6 +30,7 @@ import CompanySelection from './CompanySelection'
 import ComparisonGrid from './ComparisonGrid'
 import DifferenceResult from './DifferenceResult'
 import YearsToCalculate from './YearsToCalculate'
+
 export default {
   name: 'CalculatorPage',
   components: {

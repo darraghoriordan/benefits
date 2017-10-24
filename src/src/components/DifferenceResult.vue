@@ -1,11 +1,15 @@
 <template>
 <div>
+    <p>Taking offer two would give you...</p>
     <span v-bind:class="classObject" ref="title-container">
         {{ salaryDifference | currency }}
     </span>
-    <span v-for="b in salaryComponentDifference">
-        {{ b.name }} : {{ b.value }} <br />
-    </span>
+    <p>Because...</p>
+    <ul>
+    <li v-for="b in salaryComponentDifference">
+        {{ b.name }} : {{ b.value | currency}}
+        </li>
+    </ul>
 </div>
 </template>
 
@@ -142,7 +146,7 @@ export default {
     },
     classObject: function() {
       return {
-        'title is-2 biggestest': true,
+        'title is-2 difference-result__total-salary': true,
         'negative-number': this.salaryDifference < 0,
         'positive-number': this.salaryDifference > 0
       }
@@ -152,7 +156,7 @@ export default {
 </script>
 
 <style scoped>
-.biggestest {
+.difference-result__total-salary {
   font-size: 3em;
 }
 

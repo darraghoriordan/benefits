@@ -10,7 +10,7 @@
         "value": "Auckland, New Zealand"
       }],
       "perks": [{
-        "name": "Free Expresso Coffee",
+        "name": "Free Espresso Coffee",
         "type": "bool",
         "value": "true"
       }, {
@@ -57,7 +57,7 @@
         "value": "Auckland, New Zealand"
       }],
       "perks": [{
-        "name": "Free Expresso Coffee",
+        "name": "Free Espresso Coffee",
         "type": "bool",
         "value": "true"
       }, {
@@ -86,7 +86,7 @@
         "amortise": 1,
         "value": 1000
       }, {
-        "name": "Insurance Cover",
+        "name": "Other Insurance Cover",
         "type": "fixedAmount",
         "amortise": 1,
         "value": 550
