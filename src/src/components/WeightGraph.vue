@@ -1,12 +1,21 @@
 <template>
 <!-- Stolen from this great codepen. I like it cause it's still semantic. https://codepen.io/vajkri/pen/NxzZwL-->
-    <div>
-       <div class="bar-container">
-           <div class="bar" style="width:60%"></div>
-       </div>
-          <div class="bar-container">
-           <div class="bar" style="width:20%"></div>
-       </div>
+ <div class="charts">
+    <div class="chart chart--dev">
+      <span class="chart__title">Development</span>
+      <ul class="chart--horiz">
+        <li class="chart__bar" style="width: 98%;">
+          <span class="chart__label">
+            HTML5
+          </span>
+        </li>
+        <li class="chart__bar" style="width: 98%;">
+          <span class="chart__label">
+            CSS3 &amp; SCSS
+          </span>
+        </li>
+      </ul>
+    </div>
     </div>
 </template>
 
@@ -43,49 +52,155 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
-.bar {
-  height: 15px;
-  max-width: 800px;
-  margin: 0 auto 10px auto;
-  line-height: 30px;
-  font-size: 16px;
-  color: white;
-  padding: 0 0 0 10px;
+<style lang="scss" scoped> 
+
+@mixin stagger-anim-delay($i, $initial-delay, $stagger-delay) {
+  @while $i > 0 {
+    &:nth-of-type(#{$i}) {
+      animation-delay: $initial-delay + $stagger-delay * $i;
+    }
+    $i: $i - 1;
+  }
+}
+
+body {
+  margin-top: 20px;
+  font-family: sans-serif;
+  color: #282828;
+}
+
+//Demo
+.skills {
+  width: 80%;
+  max-width: 960px;
+  height: 780px;
+  margin: auto;
+
   position: relative;
 }
-.bar::before {
-  content: '';
-  width: 100%;
-  position: absolute;
-  left: 0;
-  height: 30px;
-  top: 0;
-  z-index: -2;
-  background: #ecf0f1;
+
+.lines {
+  height: 100%;
+  position: relative;
 }
-.bar::after {
-  content: '';
-  background: #2ecc71;
-  height: 30px;
-  transition: 0.7s;
+.line {
+  height: inherit;
+  width: 2px;
+
+  position: absolute;
+
+  background: rgba(#eee, 0.6);
+
+  &.l--0 {
+    left: 0;
+  }
+  &.l--25 {
+    left: 25%;
+  }
+  &.l--50 {
+    left: 50%;
+  }
+  &.l--75 {
+    left: 75%;
+  }
+  &.l--100 {
+    left: calc(100% - 1px);
+  }
+}
+.line__label {
   display: block;
+  width: 100px;
+  text-align: center;
+
+  position: absolute;
+  bottom: -20px;
+  right: -50px;
+
+  &.title {
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+}
+
+.charts {
   width: 100%;
-  -webkit-animation: bar-before 1 1.8s;
+  height: 100%;
   position: absolute;
   top: 0;
   left: 0;
-  z-index: -1;
+  z-index: 10;
 }
-.bar1::after {
-  max-width: 60%;
+
+.chart {
+  margin: 30px 0 0;
+
+  &:first-child {
+    margin: 0;
+  }
 }
-@-webkit-keyframes bar-before {
+
+.chart__title {
+  display: block;
+  margin: 0 0 10px;
+
+  font-weight: bold;
+
+  opacity: 0;
+
+  animation: 1s anim-lightspeed-in ease forwards;
+
+  .chart--dev & {}
+  .chart--prod & {
+    animation-delay: 3.3s;
+  }
+  .chart--design & {
+    animation-delay: 4.5s;
+  }
+}
+
+.chart--horiz {
+  overflow: hidden;
+}
+
+.chart__bar {
+  $border-rad: 4px;
+  height: 30px;
+  margin-bottom: 10px;
+
+  background: linear-gradient(to left, #4cb8c4, #3cd3ad);
+  border-top-right-radius: $border-rad;
+  border-bottom-right-radius: $border-rad;
+  opacity: 0;
+
+  animation: 1s anim-lightspeed-in ease forwards;
+
+  .chart--dev & {
+    @include stagger-anim-delay(11, 0.5s, 0.2s);
+  }
+  .chart--prod & {
+    @include stagger-anim-delay(2, 3.8s, 0.2s);
+  }
+  .chart--design & {
+    @include stagger-anim-delay(3, 5s, 0.2s);
+  }
+}
+
+.chart__label {
+  padding-left: 10px;
+  line-height: 30px;
+  color: white;
+}
+
+//Keyframes
+@keyframes anim-lightspeed-in {
   0% {
-    width: 0px;
+    transform: translateX(-200%);
+    opacity: 1;
   }
   100% {
-    width: 100%;
+    transform: translateX(0);
+    opacity: 1;
   }
 }
+
 </style>
