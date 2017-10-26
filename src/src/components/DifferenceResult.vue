@@ -5,6 +5,7 @@
         {{ salaryDifference | currency }}
     </span>
     <p>Because...</p>
+    <WeightGraph :values="salaryComponentDifference"></WeightGraph>
     <ul>
     <li v-for="b in salaryComponentDifference">
         {{ b.name }} : {{ b.value | currency}}
@@ -14,8 +15,10 @@
 </template>
 
 <script>
+import WeightGraph from './WeightGraph'
 export default {
   name: 'DifferenceResult',
+  components: { WeightGraph },
   props: {
     companyOneDataset: {
       type: Array,
