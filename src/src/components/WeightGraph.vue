@@ -5,9 +5,11 @@
   <div class="charts">
     <div class="chart chart--dev">
       <ul class="chart--horiz">
-        <li v-for="item in normalisedValues" class="chart__bar" v-bind:style="{ width: item.normalisedValue + '%' }">
+        <li v-for="item in normalisedValues" class="chart__item" >
           <span class="chart__label">
            {{item.name}}
+          </span>
+        <span class="chart__bar" v-bind:style="{ width: item.normalisedValue + '%' }">          
           </span>
         </li>       
       </ul>
@@ -78,23 +80,17 @@ export default {
   }
 }
 
-.chart__title {
-  display: block;
-  margin: 0 0 10px;
-
-  font-weight: bold;
-
-  opacity: 1;
-}
-
 .chart--horiz {
   overflow: hidden;
 }
-
+.chart__item {
+  margin-bottom: 10px;
+}
 .chart__bar {
   $border-rad: 4px;
   height: 30px;
-  margin-bottom: 10px;
+  display:inline-block;
+  width:66%;
   background: linear-gradient(to left, #4cb8c4, #3cd3ad);
   border-top-right-radius: $border-rad;
   border-bottom-right-radius: $border-rad;
@@ -102,7 +98,8 @@ export default {
 }
 
 .chart__label {
-  padding-left: 10px;
+  text-align: right;
+  width:33%;
   line-height: 30px;
 }
 </style>
