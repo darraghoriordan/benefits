@@ -15,6 +15,7 @@
                 </CompanySelection>
             </div>
         </div>
+        
         <YearsToCalculate :value="yearsToCalculate" @input="changeYearsToCalculate"></YearsToCalculate>
         <DifferenceResult :company-one-dataset="companyOneDataset" :company-two-dataset="companyTwoDataset"></DifferenceResult>
         <div>

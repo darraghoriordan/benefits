@@ -1,75 +1,63 @@
 <template>
 <!-- Stolen from this great codepen. I like it cause it's still semantic. https://codepen.io/vajkri/pen/NxzZwL-->
- <div class="charts">
+<div class="graph-container">
+<div class="skills">
+  <div class="charts">
     <div class="chart chart--dev">
-      <span class="chart__title">Development</span>
       <ul class="chart--horiz">
-        <li class="chart__bar" style="width: 98%;">
+        <li v-for="item in normalisedValues" class="chart__bar" v-bind:style="{ width: item.normalisedValue + '%' }">
           <span class="chart__label">
-            HTML5
+           {{item.name}}
           </span>
-        </li>
-        <li class="chart__bar" style="width: 98%;">
-          <span class="chart__label">
-            CSS3 &amp; SCSS
-          </span>
-        </li>
+        </li>       
       </ul>
     </div>
-    </div>
+  </div>
+</div>
+</div>
 </template>
 
 <script>
 export default {
   name: 'WeightGraph',
-  data: function() {
-    return {
-      values: [
-        {
-          name: 'itemOne',
-          value: 1000
-        },
-        {
-          name: 'item2',
-          value: 2000
-        }
-      ]
+  methods: {
+    normaliseValue: function(value, total) {
+      // normalise to 0-100 scale
+      if (value === 0) {
+        return 0
+      }
+
+      let normValue = Math.floor(100 * (value / total))
+      return normValue
+    },
+    compareNormalisedValues: function compare(a, b) {
+      if (a.normalisedValue > b.normalisedValue) return -1
+      if (a.normalisedValue < b.normalisedValue) return 1
+      return 0
     }
   },
-  methods: {
-    normaliseValue: function(value, maxValue, minValue) {
-      // normalise to 0-100 scale
-      let normValue = 0 + (100 - 0) * (value - minValue) / (maxValue - minValue)
-      return normValue
+  computed: {
+    normalisedValues: function() {
+      let vueComponent = this
+
+      return this.values.map(function(element) {
+        return {
+          name: element.name,
+          value: element.value,
+          normalisedValue: vueComponent.normaliseValue(
+            element.value,
+            vueComponent.totalDifference,
+            0
+          )
+        }
+      }, this).sort(this.compareNormalisedValues)
     }
-  }
-  //   props: [
-  //     {
-  //       name: 'values',
-  //       type: Array
-  //     }
-  //   ]
+  },
+  props: ['values', 'totalDifference']
 }
 </script>
 
-<style lang="scss" scoped> 
-
-@mixin stagger-anim-delay($i, $initial-delay, $stagger-delay) {
-  @while $i > 0 {
-    &:nth-of-type(#{$i}) {
-      animation-delay: $initial-delay + $stagger-delay * $i;
-    }
-    $i: $i - 1;
-  }
-}
-
-body {
-  margin-top: 20px;
-  font-family: sans-serif;
-  color: #282828;
-}
-
-//Demo
+<style lang="scss" scoped>
 .skills {
   width: 80%;
   max-width: 960px;
@@ -77,49 +65,6 @@ body {
   margin: auto;
 
   position: relative;
-}
-
-.lines {
-  height: 100%;
-  position: relative;
-}
-.line {
-  height: inherit;
-  width: 2px;
-
-  position: absolute;
-
-  background: rgba(#eee, 0.6);
-
-  &.l--0 {
-    left: 0;
-  }
-  &.l--25 {
-    left: 25%;
-  }
-  &.l--50 {
-    left: 50%;
-  }
-  &.l--75 {
-    left: 75%;
-  }
-  &.l--100 {
-    left: calc(100% - 1px);
-  }
-}
-.line__label {
-  display: block;
-  width: 100px;
-  text-align: center;
-
-  position: absolute;
-  bottom: -20px;
-  right: -50px;
-
-  &.title {
-    text-transform: uppercase;
-    font-weight: bold;
-  }
 }
 
 .charts {
@@ -145,17 +90,7 @@ body {
 
   font-weight: bold;
 
-  opacity: 0;
-
-  animation: 1s anim-lightspeed-in ease forwards;
-
-  .chart--dev & {}
-  .chart--prod & {
-    animation-delay: 3.3s;
-  }
-  .chart--design & {
-    animation-delay: 4.5s;
-  }
+  opacity: 1;
 }
 
 .chart--horiz {
@@ -170,19 +105,7 @@ body {
   background: linear-gradient(to left, #4cb8c4, #3cd3ad);
   border-top-right-radius: $border-rad;
   border-bottom-right-radius: $border-rad;
-  opacity: 0;
-
-  animation: 1s anim-lightspeed-in ease forwards;
-
-  .chart--dev & {
-    @include stagger-anim-delay(11, 0.5s, 0.2s);
-  }
-  .chart--prod & {
-    @include stagger-anim-delay(2, 3.8s, 0.2s);
-  }
-  .chart--design & {
-    @include stagger-anim-delay(3, 5s, 0.2s);
-  }
+  opacity: 1;
 }
 
 .chart__label {
@@ -190,17 +113,4 @@ body {
   line-height: 30px;
   color: white;
 }
-
-//Keyframes
-@keyframes anim-lightspeed-in {
-  0% {
-    transform: translateX(-200%);
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
 </style>
