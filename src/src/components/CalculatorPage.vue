@@ -2,14 +2,14 @@
     <div>
       <div class="columns">
             <div class="column">
-                <h2 class="title is-2">Offer One</h2>
+                <h2 class="title is-2 has-text-centered">Offer One</h2>
                 <SalaryInput @input="changeLeftSalaryValue" :value="0"></SalaryInput>
                 <CompanySelection @selected="selectedLeft" :company-collection="companyCollection">
                 </CompanySelection>
             </div>
 
             <div class="column">
-                <h2 class="title is-2">Offer Two</h2>
+                <h2 class="title is-2 has-text-centered">Offer Two</h2>
                 <SalaryInput @input="changeRightSalaryValue" :value="0"></SalaryInput>
                 <CompanySelection @selected="selectedRight" :company-collection="companyCollection">
                 </CompanySelection>

@@ -5,20 +5,7 @@
         {{ salaryDifference | currency }}
     </span>
     <p>Because...</p>
-    <div class="columns">
-      <div class="column">
-<WeightGraph :values="salaryComponentDifference" :totalDifference="salaryDifference"></WeightGraph>
-        </div>
-          <div class="column">
-    <ul>
-    <li v-for="b in salaryComponentDifference">
-        {{ b.name }} : {{ b.value | currency}}
-        </li>
-    </ul>
-        </div>
-      </div>
-    
-
+    <WeightGraph :values="salaryComponentDifference" :totalDifference="salaryDifference"></WeightGraph>
 </div>
 </template>
 
