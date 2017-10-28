@@ -1,7 +1,7 @@
 <template>
     <div class="field is-horizontal">
         <div class="field-label is-small">
-            <label class="label">Select Company</label>
+            <label class="label">Company</label>
         </div>
         <div class="field-body">
             <div class="field">

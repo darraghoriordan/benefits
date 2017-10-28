@@ -4,14 +4,14 @@
       <ul class="chart">
         <li v-for="item in normalisedValues" class="chart__item" >       
                <div class="chart__left-bar-container ">
-            <span class="chart__bar chart__bar--left-direction" v-bind:style="{ width: item.normalisedValue + '%' }">          
+            <span class="chart__bar chart__bar--left-direction" v-bind:style="{ width: item.normalisedValueLeft + '%' }">          
             </span>
             </div>
             <span class="chart__label">
             {{item.name}} ({{ item.value | currency }})
             </span>
             <div>
-            <span class="chart__bar chart__bar--right-direction" v-bind:style="{ width: item.normalisedValue + '%' }">          
+            <span class="chart__bar chart__bar--right-direction" v-bind:style="{ width: item.normalisedValueRight + '%' }">          
             </span>
             </div>
         </li>
@@ -33,13 +33,14 @@ export default {
       if (value === 0) {
         return 0
       }
-
+      console.log(`Math.floor(100 * (${value} / ${total})`)
       let normValue = Math.floor(100 * (value / total))
+      console.log(`=${normValue}`)
       return normValue
     },
     compareNormalisedValues: function compare(a, b) {
-      if (a.normalisedValue > b.normalisedValue) return -1
-      if (a.normalisedValue < b.normalisedValue) return 1
+      if (a.value > b.value) return -1
+      if (a.value < b.value) return 1
       return 0
     }
   },
@@ -49,18 +50,26 @@ export default {
 
       return this.values
         .map(function(element) {
+          let normValue = vueComponent.normaliseValue(
+            element.value,
+            vueComponent.totalDifference,
+            0
+          )
+          let normValueLeft =
+            Math.min(element.value < 0 ? Math.abs(normValue) : 0, 100)
+          let normValueRight =
+            Math.min(element.value > 0 ? Math.abs(normValue) : 0, 100)
           return {
             name: element.name,
             value: element.value,
-            normalisedValue: vueComponent.normaliseValue(
-              element.value,
-              vueComponent.totalDifference,
-              0
-            )
+            normalisedValueLeft: normValueLeft,
+            normalisedValueRight: normValueRight
           }
         }, this)
         .filter(function(element) {
-          return element.normalisedValue > 0
+          return (
+            element.normalisedValueLeft > 0 || element.normalisedValueRight > 0
+          )
         })
         .sort(this.compareNormalisedValues)
     }
@@ -88,7 +97,7 @@ export default {
 .chart__left-bar-container {
   text-align: right;
 }
-  $border-rad: 4px;
+$border-rad: 4px;
 .chart__bar--left-direction {
   background: linear-gradient(to right, #4cb8c4, #3cd3ad);
   border-top-left-radius: $border-rad;

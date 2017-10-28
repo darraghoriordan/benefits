@@ -99,6 +99,8 @@ export default {
         }
         if (companyTwoElement) {
           diffdElement.value = companyTwoElement.value - companyOneElement.value
+        } else {
+          diffdElement.value = 0 - companyOneElement.value
         }
         differenceSet.push(diffdElement)
       }, this)

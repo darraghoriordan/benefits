@@ -1,22 +1,34 @@
 <template>
     <div>
+      <YearsToCalculate :value="yearsToCalculate" @input="changeYearsToCalculate"></YearsToCalculate>
+            <div class="columns">
+                          <div class="column">
+      <h2 class="title is-2 has-text-centered">Offer One</h2>
+           </div>
+            <div class="column">
+         <h2 class="title is-2 has-text-centered">Vs</h2>
+           </div>
+                       <div class="column">
+      <h2 class="title is-2 has-text-centered">Offer Two</h2>
+           </div>
+           </div>
       <div class="columns">
             <div class="column">
-                <h2 class="title is-2 has-text-centered">Offer One</h2>
+                
                 <SalaryInput @input="changeLeftSalaryValue" :value="0"></SalaryInput>
                 <CompanySelection @selected="selectedLeft" :company-collection="companyCollection">
                 </CompanySelection>
             </div>
 
             <div class="column">
-                <h2 class="title is-2 has-text-centered">Offer Two</h2>
+                
                 <SalaryInput @input="changeRightSalaryValue" :value="0"></SalaryInput>
                 <CompanySelection @selected="selectedRight" :company-collection="companyCollection">
                 </CompanySelection>
             </div>
         </div>
         
-        <YearsToCalculate :value="yearsToCalculate" @input="changeYearsToCalculate"></YearsToCalculate>
+        
         <DifferenceResult :company-one-dataset="companyOneDataset" :company-two-dataset="companyTwoDataset"></DifferenceResult>
         <div>
             <ComparisonGrid :leftCompany="companyOne" :rightCompany="companyTwo"></ComparisonGrid>
