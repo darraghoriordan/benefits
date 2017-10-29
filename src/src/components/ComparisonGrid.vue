@@ -1,7 +1,7 @@
 <template>
     <div>       
-      <ComparisonSection :left-company="leftCompany" :right-company="rightCompany" category-name="benefits"></ComparisonSection>
-      <ComparisonSection :left-company="leftCompany" :right-company="rightCompany" category-name="technology"></ComparisonSection>
+      <!-- <ComparisonSection :left-company="leftCompany" :right-company="rightCompany" category-name="benefits"></ComparisonSection>
+      <ComparisonSection :left-company="leftCompany" :right-company="rightCompany" category-name="technology"></ComparisonSection> -->
       <ComparisonSection :left-company="leftCompany" :right-company="rightCompany" category-name="perks"></ComparisonSection>
     </div>
 </template>
