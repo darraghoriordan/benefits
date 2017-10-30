@@ -1,6 +1,6 @@
 <template>
 <div>
-    <p>Taking offer two would give you...</p>
+    <p>Taking the {{offerTitle}} offer would give you...</p>
     <span v-bind:class="classObject" ref="title-container">
         {{ salaryDifference | currency }}
     </span>
@@ -21,6 +21,10 @@ export default {
     },
     companyTwoDataset: {
       type: Array,
+      required: true
+    },
+    offerTitle: {
+      type: String,
       required: true
     }
   },

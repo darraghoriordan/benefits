@@ -4,13 +4,13 @@
       <AnnualSalaryIncreaseInput :value="annualSalaryIncrease" @input="changeAnnualSalaryIncreaseToCalculate"></AnnualSalaryIncreaseInput>
             <div class="columns">
                           <div class="column">
-      <h2 class="title is-2 has-text-centered">Offer One</h2>
+      <h2 class="title is-2 has-text-centered">{{titleOne}}</h2>
            </div>
             <div class="column">
          <h2 class="title is-2 has-text-centered">Vs</h2>
            </div>
       <div class="column">
-      <h2 class="title is-2 has-text-centered">Offer Two</h2>
+      <h2 class="title is-2 has-text-centered">{{titleTwo}}</h2>
            </div>
            </div>
       <div class="columns">
@@ -26,12 +26,7 @@
                 </CompanySelection>
             </div>
         </div>
-        
-        
-        <DifferenceResult :company-one-dataset="companyOneDataset" :company-two-dataset="companyTwoDataset"></DifferenceResult>
-        <div>
-            <ComparisonGrid :leftCompany="companyOne" :rightCompany="companyTwo"></ComparisonGrid>
-        </div>
+        <DifferenceResult :company-one-dataset="companyOneDataset" :company-two-dataset="companyTwoDataset" :offerTitle="titleTwo"></DifferenceResult>
     </div>
 </template>
 
@@ -66,6 +61,20 @@ export default {
     }
   },
   computed: {
+    titleOne: function () {
+        var title = 'Offer One'
+        if (this.companyOne && this.companyOne.company) {
+          title = this.companyOne.company.find(n => n.name === 'Company Name').value
+        }
+        return title
+    },
+    titleTwo: function () {
+        var title = 'Offer Two'
+        if (this.companyTwo && this.companyTwo.company) {
+          title = this.companyTwo.company.find(n => n.name === 'Company Name').value
+        }
+        return title
+    },
     companyOneDataset: function() {
       return this.calculateAnnualSalaryCollection(
         this.salaryOne,

@@ -91,6 +91,28 @@
         "amortise": 1,
         "value": 550
       }]
+    },
+    {
+      "company": [{
+        "name": "Company Name",
+        "type": "string",
+        "value": "Vend"
+      }, {
+        "name": "Location",
+        "type": "string",
+        "value": "Auckland, New Zealand"
+      }],
+      "benefits": [{
+        "name": "Kiwisaver",
+        "type": "percent",
+        "amortise": 1,
+        "value": 3
+      }, {
+        "name": "Training and Conference",
+        "type": "fixedAmount",
+        "amortise": 1,
+        "value": 5000
+      }]
     }
   ]
 }

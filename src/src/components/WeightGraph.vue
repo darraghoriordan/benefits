@@ -33,9 +33,7 @@ export default {
       if (value === 0) {
         return 0
       }
-      console.log(`Math.floor(100 * (${value} / ${total})`)
       let normValue = Math.floor(100 * (value / total))
-      console.log(`=${normValue}`)
       return normValue
     },
     compareNormalisedValues: function compare(a, b) {

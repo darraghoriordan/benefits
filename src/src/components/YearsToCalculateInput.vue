@@ -25,7 +25,6 @@ export default {
   methods: {
     updateValue: function(value) {
       var formattedValue = Number(value.trim())
-      console.log(formattedValue)
       if (isNaN(formattedValue)) {
         formattedValue = 0
       }
